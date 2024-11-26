@@ -14,18 +14,19 @@
 
 ## Description
 
-This package is a very small part of the custom kernel of `Ascoos Cms` for use in `PHP 8.2` or later versions.
+This package is a very small part of the `Ascoos Cms` custom core for use with `PHP 8.2` or later.
 
-`Ascoos Cms 24'` consists of several kernel block code, one of which is the `Ascoos Framework 24'`, as well as [phpBCL](https://github.com/ascoos/phpBCL). 
+`Ascoos Cms 24` consists of several core code blocks, one of which is the `Ascoos Framework 24`, as well as [phpBCL](https://github.com/ascoos/phpBCL).
 
-In older versions the `Ascoos Framework` was integrated into the core of `Ascoos Cms`, but in the new version 24 it becomes independent and now becomes one of the many main components of the core of the Cms. 
-In the modern way of programming, the ability of a code to be a modular `block core code`, even within an object-oriented code, enables it to adapt to modern methods and requirements.
-This, `Ascoos Cms` had it largely at its core since the first releases in the distant 2008. In 2010 it was an almost complete block core code cms.
-The new version 24 now comes to create new data in its modular core.
+In older versions, the `Ascoos Framework` was integrated into the `Ascoos Cms` core, but in the new version 24 it becomes independent and is now one of the many main components of the Cms core.
 
-Version 24 only works on `PHP 8.2 or later`, as the kernel was redesigned from scratch to support modern programming methods and modes.
+In the modern way of programming, the ability of a core code to be modular, gives it the ability to adapt to modern methods and requirements.
+`Ascoos Cms` has had this to a large extent in its core since the first releases in the distant 2008. In 2010 it was almost a complete modular core code block.
+Now, the new version 24 is now coming to create new data in its modular core.
 
-Part of the `Ascoos Framework 24'` is given with the source code to make it easier for Web Developers to understand how to write the extensions they will create for `Ascoos Cms`.
+Version 24 only works on `PHP 8.2 or later`, as the core has been redesigned from the ground up to support modern programming methods and features.
+
+Part of the `Ascoos Framework`, it is provided as source code to make it easier for Web Developers to understand how to write the extensions they will create for `Ascoos Cms`.
 
 ***
 
@@ -45,7 +46,7 @@ No Exists now
 
 ## Contributing
 
-The `Ascoos Cms`, of which the present `Ascoos Framework` is a part, contains encrypted source code, but a small part of it is given as source code for educational purposes.
+`Ascoos Cms`, of which this `Ascoos Framework` is a part, contains encrypted source code, but a small part of it is given as source code for educational purposes.
 
 Contributions are welcome [github](https://github.com/ascoos/afw)
 
