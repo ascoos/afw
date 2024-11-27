@@ -36,6 +36,8 @@ Part of the `Ascoos Framework`, it is provided as source code to make it easier 
 [![Download ascoos-framework](https://img.shields.io/sourceforge/dw/ascoos-fw.svg)](https://sourceforge.net/projects/ascoos-fw/files/latest/download)
 [![Download ascoos-framework](https://img.shields.io/sourceforge/dd/ascoos-fw.svg)](https://sourceforge.net/projects/ascoos-fw/files/latest/download)
 
+[![Download Ascoos Framework 24'](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/ascoos-fw/files/latest/download)
+
 ***
 
 ## Awards
@@ -66,8 +68,6 @@ Please send any feedback or suggestions to [@ascoos](https://twitter.com/ascoos)
 [![OFFICIAL ASCOOS DOWNLOAD SITE](https://img.shields.io/website?url=https://dl.ascoos.com/pub/afw)](https://dl.ascoos.com/pub/afw/afw-latest.zip) 
 [![Download Ascoos Framework 24 from GitHub](https://img.shields.io/badge/GitHub-afw-blue.svg)](https://github.com/ascoos/afw/releases) 
 [![Download Ascoos Framework 24 from PHPClasses](https://img.shields.io/badge/php-classes-blue.svg)](https://www.phpclasses.org/package/12926.html) 
-[![Download Ascoos Framework 24 from Sourceforge](https://img.shields.io/badge/SourceForge-ascoos-fw-blue.svg)](https://sourceforge.net/projects/ascoos-fw/files/latest/download)
-
 
 ***
 
