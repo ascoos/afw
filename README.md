@@ -67,7 +67,7 @@ Please send any feedback or suggestions to [@ascoos](https://twitter.com/ascoos)
 
 [![OFFICIAL ASCOOS DOWNLOAD SITE](https://img.shields.io/website?url=https://dl.ascoos.com/pub/afw)](https://dl.ascoos.com/pub/afw/afw-latest.zip) 
 [![Download Ascoos Framework 24 from GitHub](https://img.shields.io/badge/GitHub-afw-blue.svg)](https://github.com/ascoos/afw/releases) 
-[![Download Ascoos Framework 24 from PHPClasses](https://img.shields.io/badge/php-classes-blue.svg)](https://www.phpclasses.org/package/12926.html) 
+[![Download Ascoos Framework 24 from PHPClasses](https://img.shields.io/badge/php-classes-blue.svg)](https://www.phpclasses.org/package/13408.html) 
 
 ***
 
