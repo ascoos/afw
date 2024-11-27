@@ -1,4 +1,4 @@
-<p align="center"><img src="https://dl.ascoos.com/images/ascoos.png" /></p>
+![Ascoos Cms](https://dl.ascoos.com/images/ascoos.png)
 
 # ASCOOS Framework
 
