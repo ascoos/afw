@@ -20,9 +20,9 @@
  * @subpackage         	: ASCOOS FRAMEWORK Core Autoload Files
  * @source             	: [ASCOOS FRAMEWORK (AFW)]/autoload.php
  * @fileNo             	: 
- * @version            	: 24.0.0
+ * @version            	: 24.0.1
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 
+ * @updated            	: 2024-11-27 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -34,24 +34,28 @@ defined ("ALEXSOFT_RUN_CMS") OR define ("ALEXSOFT_RUN_CMS", True);
 defined('ASCOOS_RUN') OR define('ASCOOS_RUN', True);
 define('ASCOOS_FRAMEWORK_RUN', True);
 
+// Φορτώνουμε την βιβλιοθήκη υποστήριξης παλαιότερων εκδόσεων.
+if (file_exists('libs/phpBCL/autoload.php')) require_once "libs/phpBCL/autoload.php";
+
 require_once "autoloader.php";
 require_once "kernel/implementation/Methods.php";
 require_once "kernel/coreKernel.php";
+
+
 
 use ASCOOS\FRAMEWORK\Autoloader\TAutoloader;
 
 // Δημιουργούμε αντικείμενο της κλάσης TAutoloader
 $autoloader = new TAutoloader();
 
-// Συμπεριλαμβάνουμε τα αρχεία autoload.php από τους υποφακέλους των βιβλιοθηκών
-$autoloader->includeLibraries();
-
-
 // Συμπεριλαμβάνουμε τα αρχεία *.php από τον φάκελο kernel/implementation 
 $autoloader->includeImplementationFiles();
 
 // Συμπεριλαμβάνουμε τα αρχεία core*.php από τον φάκελο kernel
 $autoloader->includeCoreFiles();
+
+// Συμπεριλαμβάνουμε τα αρχεία autoload.php από τους υποφακέλους των βιβλιοθηκών
+$autoloader->includeLibraries();
 
 
 

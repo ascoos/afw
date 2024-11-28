@@ -35,11 +35,12 @@ namespace ASCOOS\FRAMEWORK\Kernel\Disks;
 defined ("ALEXSOFT_RUN_CMS") or die("Prohibition of Access.");
 defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
 
+//require_once "implementation/Methods.php";
+//require_once "coreKernel.php";
+//require_once "implementation/TDriveInfo.php";
+
 
 use ASCOOS\FRAMEWORK\Kernel\Core\TObject;
-
-require_once "implementation/TDriveInfo.php";
-
 
 
 /**
@@ -56,7 +57,13 @@ require_once "implementation/TDriveInfo.php";
  * @method  private function detectDrives($User): array 
  * @method  private function formatBytes($bytes, $precision = 2): string
  * @method  public  function getDriveInfo(): array
+ * @method  public function getDrivesSize(): array
  * @method  public  function setUser($User=null): void 
+ * 
+ * [ INHERITANCE ]
+ * @method <TObject> final public Free(object $object): bool;          Frees the memory of the Object or its clone 
+ * @method <TObject> final public function FreeProperties(object $object): bool;
+ * 
  */
 use ASCOOS\FRAMEWORK\Kernel\Implementation\TDriveInfo\CoreDisks_TDriveInfo_implementation;
 use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\func_formatBytes;

@@ -50,7 +50,7 @@ use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\func_FreeProperties;
  * @method final public Free(object $object): bool;          Frees the memory of the Object or its clone 
  * @method final public function FreeProperties(object $object): bool;
  * 
- * [ INHERITACE PROPERTIES ]
+ * [ INHERITANCE PROPERTIES ]
  * @protected   string $message = ""; 
  * @private     string $string = "";
  * @protected   int $code;
@@ -59,7 +59,7 @@ use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\func_FreeProperties;
  * @private     array $trace = [];
  * @private     ?Throwable $previous = null;
  * 
- * [ INHERITACE METHODS ]
+ * [ INHERITANCE METHODS ]
  * @method public __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
  * @method final public getMessage(): string
  * @method final public getPrevious(): ?Throwable 

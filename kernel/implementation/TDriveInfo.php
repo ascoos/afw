@@ -20,9 +20,9 @@
  * @subpackage         	: ASCOOS FRAMEWORK Core Disks Drives Information Implementation File
  * @source             	: [ASCOOS FRAMEWORK (AFW)]/kernel/implementation/TDriveInfo.php
  * @fileNo             	: 
- * @version            	: 24.0.0
+ * @version            	: 24.0.1
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 
+ * @updated            	: 2024-11-27 07:00:00 UTC+3
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -105,7 +105,31 @@ trait CoreDisks_TDriveInfo_implementation
             }
         }
         return $driveInfo;
-    }  
+    } 
+    
+    
+    public function getDrivesSize(): array
+    {
+        $driveSize = [];
+        foreach ($this->drives as $drive) {
+            $totalSpace = @disk_total_space($drive);
+            $freeSpace = @disk_free_space($drive);
+            if ($totalSpace !== false && $freeSpace !== false) {
+                $usedSpace = $totalSpace - $freeSpace;
+                $driveSize[$drive] = [
+                    'total' => $totalSpace,
+                    'used' => $usedSpace,
+                    'free' => $freeSpace
+                ];
+            } else {
+                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+                    $driveSize[$drive] = 'It is not a valid disk or its size cannot be read.';
+                else
+                    $driveSize[$drive] = 'It is not a valid directory or its size cannot be read.';
+            }
+        }
+        return $driveSize;
+    }     
 
 }
 
