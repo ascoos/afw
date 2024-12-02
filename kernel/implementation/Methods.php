@@ -20,9 +20,9 @@
  * @subpackage         	: ASCOOS FRAMEWORK Implementation Methods File
  * @source             	: [ASCOOS FRAMEWORK (AFW)]/kernel/implementation/Methods.php
  * @fileNo             	: 
- * @version            	: 24.0.0
+ * @version            	: 24.0.2
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 
+ * @updated            	: 2024-11-30 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -55,23 +55,36 @@ trait func_free {
      * @param object $object    Object of class for free
      * @return bool
      */
-    final public function Free(object $object): bool
-    {
+    public function Free(object $object): bool {
         if (is_object($object)) {
             unset($object);
-            memory_reset_peak_usage();
+            memory_reset_peak_usage(); // Assuming this is a valid function in your environment
             return true;
         }
         return false;
-    } 
+    }
+    
 }
 
+
+
 trait func_FreeProperties {
-    final public function FreeProperties(object $object): bool
+    /**
+     * Delete and Frees up memory for all class properties.
+     * @param object $object
+     * @return bool
+     */
+    public function FreeProperties(object $object): bool
     {
         if (is_object($object)) {
             foreach (get_object_vars($object) as $key => $value) {
-                unset($object->$key);
+                if ($key == 'defaults' ) { 
+                    continue;
+                } elseif ($key == 'properties') {
+                    $object->$key = $object->defaults;
+                } else {
+                    unset($object->$key);
+                }
             }
             memory_reset_peak_usage();
             return true;
@@ -80,6 +93,23 @@ trait func_FreeProperties {
     }
 }
 
+
+trait func_toString {
+
+    /**
+     * Returns a string containing the name of this class.
+     * 
+     * @return string 
+     * @desc <English>  Returns a string containing the name of this class.
+     * @desc <Greek>    Επιστρέφει μια συμβολοσειρά που περιέχει το όνομα αυτής της κλάσης.
+     */
+    public function __toString(): string 
+    {
+        //return get_class($this);
+        return __CLASS__;
+    }
+    
+}
 
 
 
