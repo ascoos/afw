@@ -17,12 +17,12 @@
  ************************************************************************************
  *
  * @package            	: ASCOOS FRAMEWORK (AFW)
- * @subpackage         	: Extra Array Handles for Mongo BSON File
- * @source             	: [ASCOOS FRAMEWORK (AFW)]/extras/arrays/TArrayMongoBSONHandler.php
+ * @subpackage         	: EHandles MongoDB BSON format arrays.
+ * @source             	: afw/extras/arrays/TArrayMongoBSONHandler.php
  * @fileNo             	: 
- * @version            	: 24.0.2
+ * @version            	: 24.0.3
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-01 07:00:00 UTC+3 
+ * @updated            	: 2024-12-02 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F

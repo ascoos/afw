@@ -16,13 +16,13 @@
  * @ASCOOS-COPYRIGHT   	: Copyright (c) 2007 - 2024, AlexSoft Software.             *
  ************************************************************************************
  *
- * @package            	: ASCOOS FRAMEWORK (AFW)
- * @subpackage         	: Main ASCOOS FRAMEWORK Core Array Handles File
- * @source             	: [ASCOOS FRAMEWORK (AFW)]/extras/arrays/TMessagePack.php
+ * @package            	: ASCOOS FRAMEWORK 24'
+ * @subpackage         	: Handles MessagePack format arrays.
+ * @source             	: afw/extras/arrays/TMessagePack.php
  * @fileNo             	: 
- * @version            	: 24.0.2
+ * @version            	: 24.0.3
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-01 07:00:00 UTC+3 
+ * @updated            	: 2024-12-02 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
