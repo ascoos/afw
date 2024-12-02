@@ -16,13 +16,13 @@
  * @ASCOOS-COPYRIGHT   	: Copyright (c) 2007 - 2024, AlexSoft Software.             *
  ************************************************************************************
  *
- * @package            	: ASCOOS FRAMEWORK (AFW)
- * @subpackage         	: ASCOOS FRAMEWORK Implementation Methods File
- * @source             	: [ASCOOS FRAMEWORK (AFW)]/kernel/implementation/Methods.php
+ * @package            	: ASCOOS FRAMEWORK 24'
+ * @subpackage         	: Implementation Methods File
+ * @source             	: afw/kernel/implementation/Methods.php
  * @fileNo             	: 
- * @version            	: 24.0.2
+ * @version            	: 24.0.3
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-11-30 07:00:00 UTC+3 
+ * @updated            	: 2024-12-02 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -34,6 +34,13 @@ defined ("ALEXSOFT_RUN_CMS") or die("Prohibition of Access.");
 defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
 
 trait func_formatBytes {
+    /**
+     * Returns the size of bytes in a formatted string e.g. 20.4 KB, 230.2 MB, 20.5 GB, etc.
+     * 
+     * @param int $bytes
+     * @param int $precision = 2    [optional] The optional number of decimal digits.
+     * @return string
+     */
     private function formatBytes($bytes, $precision = 2): string {
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
         

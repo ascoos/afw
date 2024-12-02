@@ -16,13 +16,13 @@
  * @ASCOOS-COPYRIGHT   	: Copyright (c) 2007 - 2024, AlexSoft Software.             *
  ************************************************************************************
  *
- * @package            	: ASCOOS FRAMEWORK (AFW)
- * @subpackage         	: ASCOOS FRAMEWORK Core Disks Drives Information Implementation File
- * @source             	: [ASCOOS FRAMEWORK (AFW)]/kernel/implementation/TDriveInfo.php
+ * @package            	: ASCOOS FRAMEWORK 24'
+ * @subpackage         	: Core Disks Drives Information Implementation File
+ * @source             	: afw/kernel/implementation/TDriveInfo.php
  * @fileNo             	: 
- * @version            	: 24.0.1
+ * @version            	: 24.0.3
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-11-27 07:00:00 UTC+3
+ * @updated            	: 2024-12-02 07:00:00 UTC+3
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -35,16 +35,8 @@ defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
 
 trait CoreDisks_TDriveInfo_implementation 
 {
-    public function __construct($User=null) {
-        if (is_null($User)) {
-            $this->user = null;
-        } else {
-            $this->setUser($User);
-            $this->execute();
-        }
-    }
 
-    public function setUser($User=null): void 
+    public function setUser(?string $User=null): void 
     {
         $this->user = $User;
     }
@@ -55,7 +47,7 @@ trait CoreDisks_TDriveInfo_implementation
         return $this->getDriveInfo();
     }
 
-    private function detectDrives($User): array 
+    private function detectDrives(?string $User=null): array 
     {
         $drives = [];
 
