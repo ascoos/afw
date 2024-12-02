@@ -47,8 +47,8 @@ use MongoDB\BSON\Document;
  * @summary Handles MongoDB BSON format arrays.
  * 
  * [ METHODS ]
- * @method void toBSON(string $filePath)         Converts array to BSON format and saves to file.
- * @method void fromBSON(string $filePath)       Converts BSON format to array.
+ * @method void toMongoBSON(string $filePath)         Converts array to BSON format and saves to file.
+ * @method void fromMongoBSON(string $filePath)       Converts BSON format to array.
  * 
  * [ INHERITANCE METHODS ]
  * @method bool empty(array $array)                                        Checks if an array is empty.
@@ -70,6 +70,8 @@ use MongoDB\BSON\Document;
  * @method void fromCSV(string $filePath)                                  Converts CSV format to array.
  * @method void toYAML(string $filePath)                                   Converts array to YAML format and saves to file.
  * @method void fromYAML(string $filePath)                                 Converts YAML format to array.
+ * @method void toBSON(string $filePath)                                   Converts array to a binary-like format and saves to file.
+ * @method void fromBSON(string $filePath)                                 Converts binary-like format to array.
  * @method void toTOML(string $filePath)                                   Converts array to TOML format and saves to file.
  * @method void fromTOML(string $filePath)                                 Converts TOML format to array.
  * @method void toPlainText(string $filePath)                              Converts array to plain text format and saves to file.
@@ -116,7 +118,7 @@ class TArrayMongoBSONHandler extends TArrayHandler
      *                         <Greek>    Η διαδρομή προς το αρχείο όπου θα αποθηκευτεί το περιεχόμενο BSON.
      * @return void
      */
-    public function toBSON(string $filePath): void
+    public function toMongoBSON(string $filePath): void
     {
         /*
         <English>
@@ -149,7 +151,7 @@ class TArrayMongoBSONHandler extends TArrayHandler
      *                         <Greek>    Η διαδρομή προς το αρχείο BSON που θα μετατραπεί.
      * @return void
      */
-    public function fromBSON(string $filePath): void
+    public function fromMongoBSON(string $filePath): void
     {
         /*
         <English>
