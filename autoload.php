@@ -20,9 +20,9 @@
  * @subpackage         	: ASCOOS FRAMEWORK Core Autoload Files
  * @source             	: [ASCOOS FRAMEWORK (AFW)]/autoload.php
  * @fileNo             	: 
- * @version            	: 24.0.2
+ * @version            	: 24.0.3
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-11-29 07:00:00 UTC+3 
+ * @updated            	: 2024-12-02 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -35,7 +35,7 @@ defined('ASCOOS_RUN') OR define('ASCOOS_RUN', True);
 define('ASCOOS_FRAMEWORK_RUN', True);
 
 // Φορτώνουμε την βιβλιοθήκη υποστήριξης παλαιότερων εκδόσεων.
-if (file_exists('libs/phpBCL8/autoload.php')) require_once "libs/phpBCL8/phpbcl8_autoload.php";
+if (file_exists('libs/phpBCL8/phpbcl8_autoload.php')) require_once "libs/phpBCL8/phpbcl8_autoload.php";
 
 require_once "autoloader.php";
 require_once "kernel/implementation/Methods.php";
