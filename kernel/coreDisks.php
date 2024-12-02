@@ -42,7 +42,12 @@ use ASCOOS\FRAMEWORK\Kernel\Core\TObject;
  * @class TDriveInfo
  * @extends parent<TObject>
  * 
+ * @desc <English>  This class manages disk information.
+ * @desc <Greek>    Η κλάση αυτή διαχειρίζεται τις πληροφορίες των δίσκων.
+ * 
+ * 
  * [ PROPERTIES]
+ * It has only private properties
  * 
  * [ METHODS ] 
  * @method  public  function __construct($User=null)
