@@ -16,13 +16,13 @@
  * @ASCOOS-COPYRIGHT   	: Copyright (c) 2007 - 2024, AlexSoft Software.             *
  ************************************************************************************
  *
- * @package            	: ASCOOS FRAMEWORK (AFW)
- * @subpackage         	: Main ASCOOS FRAMEWORK Core Array Handles File
- * @source             	: [ASCOOS FRAMEWORK (AFW)]/kernel/coreArrays.php
+ * @package            	: ASCOOS FRAMEWORK 24'
+ * @subpackage         	: Handles arrays.
+ * @source             	: afw/kernel/coreArrays.php
  * @fileNo             	: 
- * @version            	: 24.0.2
+ * @version            	: 24.0.3
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-11-30 07:00:00 UTC+3 
+ * @updated            	: 2024-12-02 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -140,7 +140,26 @@ class TArrayHandler extends TObject
      */
     public function __construct(array $array = [], array $properties = [])
     {
+        /*
+        <English>
+            If there are new properties for the class, we pass them to the properties table 
+            by calling the parent constructor.
+        </English>
+        <Greek>
+            Εάν υπάρχουν νέες ιδιότητες για την κλάση, τις περνάμε στον πίνακα ιδιοτήτων 
+            καλώντας τον προγονικό κατασκευαστή.
+        </Greek>
+        */
         parent::__construct($properties);
+
+        /*
+        <English>
+            Checks if a table $properties is empty, if not passes it to the inner data table
+        </English>
+        <Greek>
+            Ελέγχει εάν ο πίνακας $properties είναι κενός, εάν όχι τον περνάει στον εσωτερικό πίνακα δεδομένων
+        </Greek>
+        */
         if (!$this->empty($array)) $this->array = $array;
     }
 
