@@ -20,22 +20,22 @@
  * @subpackage         	: Handles arrays.
  * @source             	: afw/kernel/coreArrays.php
  * @fileNo             	: 
- * @version            	: 24.0.3
+ * @version            	: 24.0.4
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-02 07:00:00 UTC+3 
+ * @updated            	: 2024-12-05 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
  * 
  * @since PHP 8.2.0
  */
+declare(strict_types=1);
 namespace ASCOOS\FRAMEWORK\Kernel\Arrays;
 defined ("ALEXSOFT_RUN_CMS") or die("Prohibition of Access.");
 defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
 
 use SimpleXMLElement;
-use ASCOOS\FRAMEWORK\Kernel\Core\TObject;
-use ASCOOS\FRAMEWORK\Kernel\Core\TError;
+use ASCOOS\FRAMEWORK\Kernel\Core\{TObject, TError};
 
 
 /******************************************************************************
@@ -52,7 +52,6 @@ use ASCOOS\FRAMEWORK\Kernel\Core\TError;
  * 
  * [ METHODS ]
  * @method void __construct(array $array = [], array $properties = [])     The constructor method for the class. It must always be overridden.
- * @method bool empty(array $array)                                        Checks if an array is empty.
  * @method string toJSON()                                                 Converts array to JSON string.
  * @method void fromJSON(string $json)                                     Converts JSON string to array.
  * @method string toXML()                                                  Converts array to XML string.
@@ -77,13 +76,16 @@ use ASCOOS\FRAMEWORK\Kernel\Core\TError;
  * @method void fromTOML(string $filePath)                                 Converts TOML format to array.
  * @method void toPlainText(string $filePath)                              Converts array to plain text format and saves to file.
  * @method void fromPlainText(string $filePath)                            Converts plain text format to array.
+ * @method bool empty(array $array)                                        Checks if an array is empty.
  * @method array filter(callable $callback)                                Filters the array based on a callback function.
+ * @method bool find(mixed $element)                                       Finds an element in the array.
+ * @method array flatten(?array $array=null)                               Flatten function for multidimensional arrays.
+ * @method mixed reduce(callable $callback, mixed $initial)                Reduces the array to a single value using a callback function.
+ * @method void replace(array $array)                                      Replaces the array.
+ * @method void reverse()                                                  Reverses the array.
  * @method void sortAsc()                                                  Sorts the array in ascending order.
  * @method void sortDesc()                                                 Sorts the array in descending order.
- * @method void reverse()                                                  Reverses the array.
- * @method bool find(mixed $element)                                       Finds an element in the array.
  * @method array map(callable $callback)                                   Applies a callback function to each element in the array.
- * @method mixed reduce(callable $callback, mixed $initial)                Reduces the array to a single value using a callback function.
  * @method array unique()                                                  Removes duplicate values from the array.
  * @method array keys()                                                    Returns the keys of the array.
  * @method array values()                                                  Returns the values of the array.
@@ -1285,6 +1287,56 @@ class TArrayHandler extends TObject
 
 
     /**
+     * Reduces the array to a single value using a callback function.
+     * 
+     * @desc <English>  Reduces the internal array to a single value using a user-defined callback function.
+     * @desc <Greek>    Μειώνει τον εσωτερικό πίνακα σε μία μόνο τιμή χρησιμοποιώντας μια καθορισμένη από τον χρήστη συνάρτηση.
+     * 
+     * @param callable $callback <English>  The callback function to use for reduction.
+     *                           <Greek>    Η συνάρτηση που θα χρησιμοποιηθεί για τη μείωση.
+     * @param mixed $initial <English>  The initial value for the reduction.
+     *                     <Greek>    Η αρχική τιμή για τη μείωση.
+     * @return mixed <English>  The reduced value.
+     *               <Greek>    Η μειωμένη τιμή.
+     */
+    public function reduce(callable $callback, $initial)
+    {
+        /*
+        <English>
+            Reduce the internal array to a single value using the callback function.
+        </English>
+        <Greek>
+            Μειώνει τον εσωτερικό πίνακα σε μία μόνο τιμή χρησιμοποιώντας τη συνάρτηση.
+        </Greek>
+        */
+        return array_reduce($this->array, $callback, $initial);
+    }
+
+
+    /**
+     * Replaces the array.
+     * 
+     * @desc <English>  Replaces the internal array.
+     * @desc <Greek>    Αντικαθιστά τον εσωτερικό πίνακα.
+     * 
+     * @return void
+     */
+    public function replace(array $array) {
+        /*
+        <English>
+            Override default options with provided options if any.
+        </English>
+        <Greek>
+            Αντικαθιστά τις προκαθορισμένες επιλογές με τις παρεχόμενες επιλογές, εάν υπάρχουν.
+        </Greek>
+        */
+        if (!empty($array)) {
+            $this->array = array_replace($this->array, $array);
+        }        
+    }
+
+
+    /**
      * Reverses the array.
      * 
      * @desc <English>  Reverses the internal array.
@@ -1330,6 +1382,26 @@ class TArrayHandler extends TObject
         return in_array($element, $this->array);
     }
 
+
+    /**
+     * Λειτουργία flatten για πολυδιάστατους πίνακες
+     * 
+     * @desc <English> Flatten function for multidimensional arrays.
+     * @desc <Greek> Λειτουργία flatten για πολυδιάστατους πίνακες.
+     * 
+     * @param array $array <English> The multidimensional array to flatten.
+     *                     <Greek> Ο πολυδιάστατος πίνακας για να ισοπεδωθεί.
+     * @return array <English> The flattened array.
+     *               <Greek> Ο επίπεδος πίνακας.
+     */
+    function flatten(?array $array=null): array {
+        $result = [];
+        $array = (is_null($array)) ? $this->array : $array;
+        array_walk_recursive($array, function($a) use (&$result) { $result[] = $a; });
+        return $result;
+    }   
+
+
     /**
      * Applies a callback function to each element in the array.
      * 
@@ -1354,31 +1426,6 @@ class TArrayHandler extends TObject
         return array_map($callback, $this->array);
     }
 
-    /**
-     * Reduces the array to a single value using a callback function.
-     * 
-     * @desc <English>  Reduces the internal array to a single value using a user-defined callback function.
-     * @desc <Greek>    Μειώνει τον εσωτερικό πίνακα σε μία μόνο τιμή χρησιμοποιώντας μια καθορισμένη από τον χρήστη συνάρτηση.
-     * 
-     * @param callable $callback <English>  The callback function to use for reduction.
-     *                           <Greek>    Η συνάρτηση που θα χρησιμοποιηθεί για τη μείωση.
-     * @param mixed $initial <English>  The initial value for the reduction.
-     *                     <Greek>    Η αρχική τιμή για τη μείωση.
-     * @return mixed <English>  The reduced value.
-     *               <Greek>    Η μειωμένη τιμή.
-     */
-    public function reduce(callable $callback, $initial)
-    {
-        /*
-        <English>
-            Reduce the internal array to a single value using the callback function.
-        </English>
-        <Greek>
-            Μειώνει τον εσωτερικό πίνακα σε μία μόνο τιμή χρησιμοποιώντας τη συνάρτηση.
-        </Greek>
-        */
-        return array_reduce($this->array, $callback, $initial);
-    }
 
     /**
      * Removes duplicate values from the array.
@@ -1591,6 +1638,7 @@ class TArrayHandler extends TObject
         */
         return array_flip($this->array);
     }
+
 
     /**
      * Applies a callback function to each element in the array recursively.
@@ -1894,9 +1942,11 @@ class TArrayHandler extends TObject
             return filter_var($value, FILTER_VALIDATE_URL);
         });
     }
+
+ 
 }
 /******************************************************************************
  * @endcode TArrayHandler
  *****************************************************************************/
 
-?>
+

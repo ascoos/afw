@@ -20,16 +20,16 @@
  * @subpackage         	: Main Core Handles
  * @source             	: afw/kernel/coreKernel.php
  * @fileNo             	: 
- * @version            	: 24.0.3
+ * @version            	: 24.0.4
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-02 07:00:00 UTC+3 
+ * @updated            	: 2024-12-05 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
  * 
  * @since PHP 8.2.0
  */
-//declare(strict_types=1);
+declare(strict_types=1);
 namespace ASCOOS\FRAMEWORK\Kernel\Core;
 defined ("ALEXSOFT_RUN_CMS") or die("Prohibition of Access.");
 defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
@@ -39,9 +39,11 @@ use Stringable;
 use Error;
 use ReflectionClass;
 use ReflectionProperty;
-use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\func_free;
-use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\func_FreeProperties;
-use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\func_toString;
+use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\{
+    func_free, 
+    func_FreeProperties, 
+    func_toString
+};
 
 
 /**
@@ -50,8 +52,8 @@ use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\func_toString;
  * 
  * @summary     Implements the error management class.
  * 
- * @method final public Free(object $object): bool;          Frees the memory of the Object or its clone 
- * @method final public function FreeProperties(object $object): bool;
+ * @method public Free(object $object): bool;          Frees the memory of the Object or its clone 
+ * @method public function FreeProperties(object $object): bool;
  * 
  * [ INHERITANCE PROPERTIES ]
  * @protected   string $message = ""; 
@@ -148,7 +150,6 @@ interface TCoreHandler extends Stringable {}
  * @method void setProjectVersion(int|string $version = -1)     Sets the project version.
  * @method void setProperties(array $properties)    Set the properties of the class.
  * @method void setProperty(string $property, mixed $value)   Set a single property of the class.
-
  */
 #[\AllowDynamicProperties]
 class TObject extends stdClass implements TCoreHandler
@@ -179,7 +180,7 @@ class TObject extends stdClass implements TCoreHandler
      * Summary of properties
      * @var array
      */
-    private array $properties=[];
+    protected array $properties=[];
 
 
     /**  [ METHODS ]  */
@@ -607,6 +608,7 @@ class TObject extends stdClass implements TCoreHandler
     USE func_FreeProperties;
 
    
+
     /**
      * ............... Others PRIVATE TObject methods  .................
      */ 

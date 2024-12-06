@@ -132,52 +132,20 @@ function is_odd($number): bool
  */
 function array_is_empty(array $array): bool
 {
-    /*
-    <English>
-        Initialize the return value as false.
-    </English>
-    <Greek>
-        Αρχικοποιεί την τιμή επιστροφής ως false.
-    </Greek>
-    */
-    $return = false;
-
-    try {
-        /*
-        <English>
-            Check if the array is empty. If it has elements, set return value to false, otherwise set to true.
-        </English>
-        <Greek>
-            Ελέγχει αν ο πίνακας είναι κενός. Αν έχει στοιχεία, ορίζει την τιμή επιστροφής σε false, αλλιώς την ορίζει σε true.
-        </Greek>
-        */
-        if (count($array) > 0) {
-            $return = false;
-        } else {
-            $return = true;
-        }
-    } catch (Exception $e) {
-        /*
-        <English>
-            Handle the TError exception by outputting its string representation and freeing the error object.
-        </English>
-        <Greek>
-            Διαχειρίζεται την εξαίρεση TError εκτυπώνοντας την αναπαράστασή της ως συμβολοσειρά και απελευθερώνοντας το αντικείμενο σφάλματος.
-        </Greek>
-        */
-        echo $e->getMessage();
-        return false;
-    }
+    if (!is_array($array))     
+        trigger_error('array_is_empty(): expects Argument #1 to be array, '.gettype($array).' given', E_USER_WARNING);
 
     /*
     <English>
-        Return the result of the array check.
+        Check if the array is empty. 
+        If it has elements, set return value to false, otherwise set to true.
     </English>
     <Greek>
-        Επιστρέφει το αποτέλεσμα του ελέγχου του πίνακα.
+        Ελέγχει αν ο πίνακας είναι κενός. 
+        Αν έχει στοιχεία, ορίζει την τιμή επιστροφής σε false, αλλιώς την ορίζει σε true.
     </Greek>
     */
-    return $return;
+    return empty($array);
 }
 
 
