@@ -45,7 +45,7 @@ use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\{
     func_FreeProperties, 
     func_toString
 };
-
+use Exception;
 
 /**
  * @class TError
@@ -149,8 +149,8 @@ interface TCoreHandler extends Stringable {}
  * @method string|false getVersionStr(string $property)     Get the version as a formatted string.
  * @method bool isExecutable(int $currentVersion, int $currentPHPVersion)  Checks whether the current version of the class is executable according to the minimum and maximum versions you specify.
  * @method void setProjectVersion(int|string $version = -1)     Sets the project version.
- * @method void setProperties(array $properties)    Set the properties of the class.
- * @method void setProperty(string $property, mixed $value)   Set a single property of the class.
+ * @method void setProperties(array $properties, string|int|null $property_key=null)    Set the properties of the class.
+ * @method void setProperty(string|int $property, mixed $value, string|int|null $property_key=null)   Set a single property of the class.
  */
 #[\AllowDynamicProperties]
 class TObject extends stdClass implements TCoreHandler
@@ -542,7 +542,8 @@ class TObject extends stdClass implements TCoreHandler
      * @param array $properties   <English>  An associative array of properties to set.
      *                            <Greek>    Ένας συσχετιστικός πίνακας ιδιοτήτων που θα οριστούν.
      */    
-    public function setProperties(array $properties) {
+    public function setProperties(array $properties, string|int|null $property_key=null) 
+    {
         /*
         <English>
             If the properties array is not empty, override the default properties with the provided values.
@@ -553,7 +554,12 @@ class TObject extends stdClass implements TCoreHandler
         */
         if (!empty($properties)) {
             foreach ($properties as $key => $val) {
-                $this->properties[$key] = $val;
+                if (is_null($property_key)) 
+                {
+                    $this->properties[$key] = $val;
+                } else {
+                    $this->properties[$property_key][$key] = $val;
+                }
             }
         }
     }
@@ -570,7 +576,7 @@ class TObject extends stdClass implements TCoreHandler
      * @param mixed $value       <English>  The value to set for the property.
      *                           <Greek>    Η τιμή που θα οριστεί για την ιδιότητα.
      */    
-    public function setProperty(string $property, mixed $value) 
+    public function setProperty(string|int $property, mixed $value, string|int|null $property_key=null): bool 
     {
         /*
         <English>
@@ -580,9 +586,22 @@ class TObject extends stdClass implements TCoreHandler
             Ελέγχει αν το όνομα της ιδιότητας είναι συμβολοσειρά και ορίζει την τιμή της ιδιότητας.
         </Greek>
         */
-        if (is_string($property)) {
-            $this->properties[$property] = $value;
+        if (is_null($property_key)) {
+            if (is_string($property) || is_int($property)) {
+                $this->properties[$property] = $value;
+                return true;
+            } else {
+                throw new TError('The property must have an integer or string as its key.');
+            }
+        } else {
+            if (is_string($property_key) || is_int($property_key)) {
+                $this->properties[$property_key][$property] = $value;
+                return true;
+            } else {
+                throw new TError('The property must have an integer or string as its key.');
+            }            
         }
+
     }
 
 

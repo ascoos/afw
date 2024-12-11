@@ -49,16 +49,15 @@ use ASCOOS\FRAMEWORK\Kernel\Core\TObject;
  * [ PROPERTIES]
  * It has only private properties
  * 
- * [ METHODS ] 
- * @method  public  function __construct($User=null)
- * @method  public  function execute(): array 
- * @method  private function detectDrives($User): array 
- * @method  private function formatBytes($bytes, $precision = 2): string
- * @method  public  function getDriveInfo(): array
- * @method  public function getDrivesSize(): array
- * @method  public  function setUser($User=null): void 
+ * [ METHODS ]
+ * @method void __construct(?string $User=null, array $properties = [])
+ * @method array execute()
+ * @method array getDriveInfo()
+ * @method array getDrivesSize()
+ * @method void setUser(?string $User=null)
  * 
- * [ INHERITANCE ]
+ * 
+ * [ INHERITANCE METHODS ]
  * @method string __toString()                      Returns a string containing the name of this class.
  * @method bool Free(object $object)                Frees the memory of the Object or its clone.
  * @method bool FreeProperties(object $object)      Delete and Frees up memory for all class properties.
