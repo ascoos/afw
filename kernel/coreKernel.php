@@ -39,6 +39,7 @@ use Stringable;
 use Error;
 use ReflectionClass;
 use ReflectionProperty;
+use Throwable;
 
 use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\{
     func_free, 
@@ -53,21 +54,18 @@ use Exception;
  * 
  * @summary     Implements the error management class.
  * 
+ * @method public __construct(string $message = "", int $code = 0, ?Throwable $previous = null)  Initialize the class.
  * @method public __toString(): string                              Returns a string containing the error.
  * @method public Free(object $object): bool;                       Frees the memory of the Object or its clone 
  * @method public function FreeProperties(object $object): bool;    Delete and Frees up memory for all class properties.
  * 
  * [ INHERITANCE PROPERTIES ]
  * @protected   string $message = ""; 
- * @private     string $string = "";
  * @protected   int $code;
  * @protected   string $file = "";
  * @protected   int $line;
- * @private     array $trace = [];
- * @private     ?Throwable $previous = null;
  * 
  * [ INHERITANCE METHODS ]
- * @method public __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
  * @method final public getMessage(): string
  * @method final public getPrevious(): ?Throwable 
  * @method final public getCode(): int 
@@ -75,10 +73,14 @@ use Exception;
  * @method final public getLine(): int
  * @method final public getTrace(): array
  * @method final public getTraceAsString(): string
- * @method private __clone(): void
  */
 class TError extends Error 
 {
+    public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null) {
+        parent::__construct($message, $code, $previous);
+    }
+
+
     /**
      * Frees the memory of the Object or its clone 
      * 
