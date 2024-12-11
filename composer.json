@@ -1,7 +1,7 @@
 {
     "name": "ascoos/afw",
     "description": "ASCOOS FRAMEWORK 24",
-    "version": "24.0.3",
+    "version": "24.0.5",
     "license":"AGL-F (Ascoos General License - Free)",
     "homepage": "https://apps.ascoos.com/afw",
     "authors": [
@@ -20,7 +20,7 @@
             "type": "package",
             "package": {
                 "name": "ascoos/afw",
-                "version": "24.0.3",
+                "version": "24.0.5",
                 "type": "framework",
                 "distributors": [
                     {
@@ -29,7 +29,7 @@
                     },
                     {
                         "type": "zip",
-                        "url": "https://github.com/ascoos/afw/releases/download/24.0.3/afw-24.0.3.zip"
+                        "url": "https://github.com/ascoos/afw/releases/download/24.0.5/afw-24.0.5.zip"
                     },
                     {
                         "type": "zip",
@@ -37,10 +37,15 @@
                     }                                    
                 ]               
             }
-        }        
+        },
+        {
+            "type": "composer",
+            "url": "https:\/\/www.phpclasses.org\/"
+        }                
     ],
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.2",
+        "phpclasses/afw": ">=24.0.5"
     }    
 }
   
