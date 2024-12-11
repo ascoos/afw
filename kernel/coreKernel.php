@@ -20,9 +20,9 @@
  * @subpackage         	: Main Core Handles
  * @source             	: afw/kernel/coreKernel.php
  * @fileNo             	: 
- * @version            	: 24.0.4
+ * @version            	: 24.0.5
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-05 07:00:00 UTC+3 
+ * @updated            	: 2024-12-10 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -39,6 +39,7 @@ use Stringable;
 use Error;
 use ReflectionClass;
 use ReflectionProperty;
+
 use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\{
     func_free, 
     func_FreeProperties, 
@@ -52,8 +53,9 @@ use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\{
  * 
  * @summary     Implements the error management class.
  * 
- * @method public Free(object $object): bool;          Frees the memory of the Object or its clone 
- * @method public function FreeProperties(object $object): bool;
+ * @method public __toString(): string                              Returns a string containing the error.
+ * @method public Free(object $object): bool;                       Frees the memory of the Object or its clone 
+ * @method public function FreeProperties(object $object): bool;    Delete and Frees up memory for all class properties.
  * 
  * [ INHERITANCE PROPERTIES ]
  * @protected   string $message = ""; 
@@ -73,7 +75,6 @@ use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\{
  * @method final public getLine(): int
  * @method final public getTrace(): array
  * @method final public getTraceAsString(): string
- * @method public __toString(): string
  * @method private __clone(): void
  */
 class TError extends Error 
@@ -610,7 +611,7 @@ class TObject extends stdClass implements TCoreHandler
    
 
     /**
-     * ............... Others PRIVATE TObject methods  .................
+     * ............... Others TObject methods  .................
      */ 
 
 
@@ -619,4 +620,9 @@ class TObject extends stdClass implements TCoreHandler
 /******************************************************************************
  * @endcode TObject
  *****************************************************************************/
+
+
+/**
+ * ............... Others coreKernel.php Class and datas  .................
+ */ 
 ?>
