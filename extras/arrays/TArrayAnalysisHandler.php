@@ -36,6 +36,7 @@ defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
 
 
 use ASCOOS\FRAMEWORK\Kernel\Arrays\TArrayHandler;
+use Exception;
 
 /******************************************************************************
  * @startcode TArrayAnalysisHandler
@@ -48,24 +49,34 @@ use ASCOOS\FRAMEWORK\Kernel\Arrays\TArrayHandler;
  *  
  * [ METHODS ]
  * @method void __construct(array $array = [], array $properties = [])     The constructor method for the class.
+ * @method float autocorrelation(int $lag)                                 Calculates the autocorrelation of the array.
+ * @method array bootstrapResampling(int $numSamples)                      Generates bootstrap samples from the array. 
  * @method array categorizeByThreshold(float $threshold)                   Categorizes the array based on a threshold.
  * @method float correlationCoefficient(array $otherArray)                 Calculates the Pearson correlation coefficient between two arrays.
  * @method float covariance(array $otherArray)                             Calculates the covariance between the internal array and another array.
  * @method float entropy()                                                 Calculates the entropy of the array.
+ * @method array exponentialMovingAverage(float $alpha)                    Calculates the exponential moving average of the array.
  * @method mixed findMax()                                                 Finds the maximum value in the array.
  * @method mixed findMin()                                                 Finds the minimum value in the array.
  * @method array frequencyDistribution()                                   Calculates the frequency distribution of the array.
  * @method array generateStatisticsReport()                                Automatically generates a report of basic statistical measures for the array.
+ * @method float geometricMean()                                           Calculates the geometric mean of the array.
  * @method array groupBy(callable $callback)                               Groups the array elements based on a callback function.
+ * @method float harmonicMean()                                            Calculates the harmonic mean of the array.
+ * @method float interquartileRange()                                      Calculates the interquartile range of the array.
+ * @method float kurtosis()                                                Calculates the kurtosis of the array.
  * @method float mean()                                                    Calculates the mean (average) of the array.
  * @method float median()                                                  Calculates the median of the array.
  * @method mixed mode()                                                    Calculates the mode of the array.
  * @method array movingAverage(int $windowSize)                            Calculates the moving average of the array.
+ * @method float percentile(float $percentile)                             Calculates the percentile of the array.
  * @method float range()                                                   Calculates the range of the array.
+ * @method float skewness()                                                Calculates the skewness of the array.
  * @method float standardDeviation()                                       Calculates the standard deviation of the array.
  * @method float sumOfSquares()                                            Calculates the sum of squares of the array elements.
  * @method float variance()                                                Calculates the variance of the array.
  * @method float weightedAverage(array $weights)                           Calculates the weighted average of the array.
+ * @method array zScoreNormalization()                                     Normalizes the array using Z-score normalization.
  *  
  * [ INHERITANCE PROPERTIES ]
  * @property array $array                                                  Array to store data.
@@ -157,6 +168,55 @@ class TArrayAnalysisHandler extends TArrayHandler
 
 
     /**
+     * Calculates the autocorrelation of the array.
+     * 
+     * @desc <English> Calculates the autocorrelation of the array.
+     * @desc <Greek> Υπολογίζει την αυτοσυσχέτιση του πίνακα για διάφορες υστερήσεις.
+     * @param int $lag <English> The lag value for autocorrelation.
+     *                <Greek> Η τιμή υστέρησης για την αυτοσυσχέτιση.
+     * @return float <English> The autocorrelation coefficient.
+     *               <Greek> Ο συντελεστής αυτοσυσχέτισης.
+     */
+    public function autocorrelation(int $lag): float {
+        $mean = $this->mean();
+        $numerator = 0;
+        $denominator = 0;
+
+        for ($i = 0; $i < count($this->array) - $lag; $i++) {
+            $numerator += ($this->array[$i] - $mean) * ($this->array[$i + $lag] - $mean);
+        }
+
+        for ($i = 0; $i < count($this->array); $i++) {
+            $denominator += pow($this->array[$i] - $mean, 2);
+        }
+
+        return $numerator / $denominator;
+    }
+
+
+    /**
+     * Generates bootstrap samples from the array.
+     * 
+     * @desc <English> Generates bootstrap samples from the array.
+     * @desc <Greek> Δημιουργεί νέους πίνακες δεδομένων μέσω επαναληπτικής δειγματοληψίας.
+     * @param int $numSamples <English> Number of bootstrap samples to generate.
+     *                       <Greek> Αριθμός δειγμάτων bootstrap που θα δημιουργηθούν.
+     * @return array <English> The bootstrap samples.
+     *               <Greek> Τα δείγματα bootstrap. 
+     */
+    public function bootstrapResampling(int $numSamples): array 
+    {
+        $samples = [];
+        for ($i = 0; $i < $numSamples; $i++) {
+            $samples[] = array_map(function() {
+                return $this->array[array_rand($this->array)];
+            }, $this->array);
+        }
+        return $samples;
+    }
+
+
+    /**
      * Categorizes the array based on a threshold.
      * 
      * @desc <English>  Categorizes the internal array based on a threshold.
@@ -191,9 +251,23 @@ class TArrayAnalysisHandler extends TArrayHandler
      *                          <Greek>    Ο άλλος πίνακας για τον υπολογισμό της συσχέτισης.
      * @return float <English>  The Pearson correlation coefficient.
      *               <Greek>    Ο συντελεστής συσχέτισης Pearson.
+     * @throws Exception <English>  Throws an exception if the arrays have different lengths.
+     *                    <Greek>    Ρίχνει εξαίρεση αν οι πίνακες έχουν διαφορετικά μεγέθη.
      */
     public function correlationCoefficient(array $otherArray): float
     {
+        /*
+        <English>
+            Check if arrays have the same length.
+        </English>
+        <Greek>
+            Έλεγχος αν οι πίνακες έχουν το ίδιο μήκος.
+        </Greek>
+        */
+        if (count($this->array) !== count($otherArray)) {
+            throw new Exception("<English> The arrays must have the same length. <Greek> Οι πίνακες πρέπει να έχουν το ίδιο μήκος.");
+        }
+
         /*
         <English>
             Calculate the means of both arrays.
@@ -234,7 +308,7 @@ class TArrayAnalysisHandler extends TArrayHandler
         </Greek>
         */
         return $numerator / sqrt($denominatorX * $denominatorY);
-    }  
+    }
 
 
     /**
@@ -250,6 +324,19 @@ class TArrayAnalysisHandler extends TArrayHandler
      */
     public function covariance(array $otherArray): float
     {
+        /*
+        <English>
+            Check if arrays have the same length.
+        </English>
+        <Greek>
+            Έλεγχος αν οι πίνακες έχουν το ίδιο μήκος.
+        </Greek>
+        */
+        if (count($this->array) !== count($otherArray)) {
+            throw new Exception("<English> The arrays must have the same length. <Greek> Οι πίνακες πρέπει να έχουν το ίδιο μήκος.");
+        }
+        
+        
         $meanX = $this->mean();
         $meanY = (new self($otherArray))->mean();
 
@@ -283,6 +370,28 @@ class TArrayAnalysisHandler extends TArrayHandler
         }
 
         return $entropy;
+    }
+
+
+    /**
+     * Calculates the exponential moving average of the array.
+     * 
+     * @desc <English> Calculates the exponential moving average of the array.
+     * @desc <Greek> Υπολογίζει τον εκθετικό κινητό μέσο όρο του πίνακα.
+     * @param float $alpha <English> The smoothing factor (between 0 and 1).
+     *                    <Greek> Ο συντελεστής εξομάλυνσης (μεταξύ 0 και 1).
+     * @return array <English> The array of exponential moving averages.
+     *               <Greek> Ο πίνακας των εκθετικών κινητών μέσων όρων.
+     */
+    public function exponentialMovingAverage(float $alpha): array {
+        $ema = [];
+        $ema[0] = $this->array[0];
+
+        for ($i = 1; $i < count($this->array); $i++) {
+            $ema[$i] = ($alpha * $this->array[$i]) + ((1 - $alpha) * $ema[$i - 1]);
+        }
+
+        return $ema;
     }
 
 
@@ -372,6 +481,23 @@ class TArrayAnalysisHandler extends TArrayHandler
 
 
     /**
+     * Calculates the geometric mean of the array.
+     * 
+     * @desc <English> Calculates the geometric mean of the array.
+     * @desc <Greek> Υπολογίζει τον γεωμετρικό μέσο του πίνακα.
+     * @return float <English> The geometric mean of the array.
+     *               <Greek> Ο γεωμετρικός μέσος του πίνακα.
+     */
+    public function geometricMean(): float {
+        $product = 1;
+        foreach ($this->array as $value) {
+            $product *= $value;
+        }
+        return pow($product, 1 / count($this->array));
+    }
+
+
+    /**
      * Groups the array elements based on a callback function.
      * 
      * @desc <English>  Groups the internal array elements based on a callback function.
@@ -410,6 +536,59 @@ class TArrayAnalysisHandler extends TArrayHandler
         return $grouped;
     }
   
+
+    /**
+     * Calculates the harmonic mean of the array.
+     * 
+     * @desc <English> Calculates the harmonic mean of the array.
+     * @desc <Greek> Υπολογίζει τον αρμονικό μέσο του πίνακα.
+     * @return float <English> The harmonic mean of the array.
+     *               <Greek> Ο αρμονικός μέσος του πίνακα.
+     */
+    public function harmonicMean(): float {
+        $reciprocalSum = 0;
+        foreach ($this->array as $value) {
+            $reciprocalSum += 1 / $value;
+        }
+        return count($this->array) / $reciprocalSum;
+    }
+
+
+    /**
+     * Calculates the interquartile range of the array.
+     * 
+     * @desc <English> Calculates the interquartile range of the array.
+     * @desc <Greek> Υπολογίζει το διάμεσο εύρος του πίνακα.
+     * @return float <English> The interquartile range of the array.
+     *               <Greek> Το διάμεσο εύρος του πίνακα.
+     */
+    public function interquartileRange(): float {
+        sort($this->array);
+        $q1 = $this->array[floor(count($this->array) * 0.25)];
+        $q3 = $this->array[floor(count($this->array) * 0.75)];
+        return $q3 - $q1;
+    }
+
+
+    /**
+     * Calculates the kurtosis of the array.
+     * 
+     * @desc <English> Calculates the kurtosis of the array.
+     * @desc <Greek> Υπολογίζει την κύρτωση του πίνακα, δηλαδή το ύψος και την αιχμή της κατανομής.
+     * @return float <English> The kurtosis of the array.
+     *               <Greek> Η κύρτωση του πίνακα.
+     */
+    public function kurtosis(): float {
+        $mean = $this->mean();
+        $stdDev = $this->standardDeviation();
+        $n = count($this->array);
+        $sum = 0;
+        foreach ($this->array as $value) {
+            $sum += pow(($value - $mean) / $stdDev, 4);
+        }
+        return ($n * ($n + 1) / (($n - 1) * ($n - 2) * ($n - 3))) * $sum - (3 * pow(($n - 1), 2) / (($n - 2) * ($n - 3)));
+    }
+
 
     /**
      * Calculates the mean (average) of the array.
@@ -550,6 +729,28 @@ class TArrayAnalysisHandler extends TArrayHandler
 
 
     /**
+     * Calculates the percentile of the array.
+     * 
+     * @desc <English> Calculates the percentile of the array.
+     * @desc <Greek> Υπολογίζει τα εκατοστημόρια του πίνακα.
+     * @param float $percentile <English> The percentile to calculate (e.g., 0.25 for the 25th percentile).
+     *                         <Greek> Το εκατοστημόριο που θα υπολογιστεί (π.χ. 0.25 για το 25ο εκατοστημόριο).
+     * @return float <English> The value at the given percentile.
+     *               <Greek> Η τιμή στο δεδομένο εκατοστημόριο.
+     */
+    public function percentile(float $percentile): float {
+        sort($this->array);
+        $index = ($percentile * (count($this->array) - 1));
+        $lower = floor($index);
+        $upper = ceil($index);
+        $fraction = $index - $lower;
+
+        return $this->array[$lower] + ($fraction * ($this->array[$upper] - $this->array[$lower]));
+    }
+
+
+
+    /**
      * Calculates the range of the array.
      * 
      * @desc <English>  Calculates the range of the internal array.
@@ -580,6 +781,26 @@ class TArrayAnalysisHandler extends TArrayHandler
         </Greek>
         */
         return $max - $min;
+    }
+
+
+    /**
+     * Calculates the skewness of the array.
+     * 
+     * @desc <English> Calculates the skewness of the array.
+     * @desc <Greek> Υπολογίζει τη λοξότητα του πίνακα, δηλαδή την ασυμμετρία της κατανομής.
+     * @return float <English> The skewness of the array.
+     *               <Greek> Η λοξότητα του πίνακα.
+     */
+    public function skewness(): float {
+        $mean = $this->mean();
+        $stdDev = $this->standardDeviation();
+        $n = count($this->array);
+        $sum = 0;
+        foreach ($this->array as $value) {
+            $sum += pow(($value - $mean) / $stdDev, 3);
+        }
+        return ($n / (($n-1) * ($n-2))) * $sum;
     }
 
 
@@ -698,6 +919,22 @@ class TArrayAnalysisHandler extends TArrayHandler
         return $weightedSum / $sumOfWeights;
     }
 
+
+    /**
+     * Normalizes the array using Z-score normalization.
+     * 
+     * @desc <English> Normalizes the array using Z-score normalization.
+     * @desc <Greek> Υπολογίζει τις κανονικοποιημένες τιμές του πίνακα. Κανονικοποιεί τον πίνακα χρησιμοποιώντας κανονικοποίηση Z-score.
+     * @return array <English> The normalized array.
+     *               <Greek> Ο κανονικοποιημένος πίνακας.
+     */
+    public function zScoreNormalization(): array {
+        $mean = $this->mean();
+        $stdDev = $this->standardDeviation();
+        return array_map(function($value) use ($mean, $stdDev) {
+            return ($value - $mean) / $stdDev;
+        }, $this->array);
+    }
 }
 /******************************************************************************
  * @endcode TArrayAnalysisHandler
