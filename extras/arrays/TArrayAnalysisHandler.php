@@ -20,16 +20,16 @@
  * @subpackage         	: Handles advanced data analysis for arrays.
  * @source             	: afw/extras/arrays/TArrayAnalysisHandler.php
  * @file             	: 
- * @version            	: 24.0.4
+ * @version            	: 24.0.5
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-05 07:00:00 UTC+3 
+ * @updated            	: 2024-12-10 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
  * 
  * @since PHP 8.2.0
  */
-namespace ASCOOS\FRAMEWORK\Arrays\Analysis;
+namespace ASCOOS\FRAMEWORK\Extras\Arrays\Analysis;
 
 defined ("ALEXSOFT_RUN_CMS") or die("Prohibition of Access.");
 defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
@@ -47,25 +47,25 @@ use ASCOOS\FRAMEWORK\Kernel\Arrays\TArrayHandler;
  * @summary Handles advanced data analysis for arrays.
  *  
  * [ METHODS ]
- * @method void __construct(array $array = [], array $properties = [])     The constructor method for the class. It must always be overridden.
- * @method float calculateMean()                                           Calculates the mean (average) of the array.
- * @method float calculateVariance()                                       Calculates the variance of the array.
- * @method float calculateStandardDeviation()                              Calculates the standard deviation of the array.
- * @method float calculateMedian()                                         Calculates the median of the array.
- * @method mixed calculateMode()                                           Calculates the mode of the array.
- * @method float calculateRange()                                          Calculates the range of the array.
+ * @method void __construct(array $array = [], array $properties = [])     The constructor method for the class.
  * @method array categorizeByThreshold(float $threshold)                   Categorizes the array based on a threshold.
- * @method array groupBy(callable $callback)                               Groups the array elements based on a callback function.
+ * @method float correlationCoefficient(array $otherArray)                 Calculates the Pearson correlation coefficient between two arrays.
+ * @method float covariance(array $otherArray)                             Calculates the covariance between the internal array and another array.
+ * @method float entropy()                                                 Calculates the entropy of the array.
  * @method mixed findMax()                                                 Finds the maximum value in the array.
  * @method mixed findMin()                                                 Finds the minimum value in the array.
- * @method float calculateCorrelationCoefficient(array $otherArray)        Calculates the Pearson correlation coefficient between two arrays.
- * @method array calculateMovingAverage(int $windowSize)                   Calculates the moving average of the array.
- * @method array calculateFrequencyDistribution()                          Calculates the frequency distribution of the array.
- * @method float calculateCovariance(array $otherArray)                    Calculates the covariance between the internal array and another array.
- * @method float calculateWeightedAverage(array $weights)                  Calculates the weighted average of the array.
- * @method float calculateSumOfSquares()                                   Calculates the sum of squares of the array elements.
- * @method float calculateEntropy()                                        Calculates the entropy of the array.
+ * @method array frequencyDistribution()                                   Calculates the frequency distribution of the array.
  * @method array generateStatisticsReport()                                Automatically generates a report of basic statistical measures for the array.
+ * @method array groupBy(callable $callback)                               Groups the array elements based on a callback function.
+ * @method float mean()                                                    Calculates the mean (average) of the array.
+ * @method float median()                                                  Calculates the median of the array.
+ * @method mixed mode()                                                    Calculates the mode of the array.
+ * @method array movingAverage(int $windowSize)                            Calculates the moving average of the array.
+ * @method float range()                                                   Calculates the range of the array.
+ * @method float standardDeviation()                                       Calculates the standard deviation of the array.
+ * @method float sumOfSquares()                                            Calculates the sum of squares of the array elements.
+ * @method float variance()                                                Calculates the variance of the array.
+ * @method float weightedAverage(array $weights)                           Calculates the weighted average of the array.
  *  
  * [ INHERITANCE PROPERTIES ]
  * @property array $array                                                  Array to store data.
@@ -142,111 +142,17 @@ use ASCOOS\FRAMEWORK\Kernel\Arrays\TArrayHandler;
 class TArrayAnalysisHandler extends TArrayHandler
 {
     /**
-     * Calculates the mean (average) of the array.
+     * Constructor.
      * 
-     * @desc <English>  Calculates the mean (average) of the internal array.
-     * @desc <Greek>    Υπολογίζει τον μέσο όρο του εσωτερικού πίνακα.
+     * @desc <English>  Initialize the class. It must be called by the offspring if the classes are initialized.
+     * @desc <Greek>    Αρχικοποιεί την κλάση. Πρέπει να καλείται από τα παραγόμενα αν οι κλάσεις αρχικοποιούνται.
      * 
-     * @return float <English>  The mean of the array.
-     *               <Greek>    Ο μέσος όρος του πίνακα.
-     */
-    public function calculateMean(): float
+     * @param array $properties   <English>  An associative array of properties to initialize the class with.
+     *                            <Greek>    Ένας συσχετιστικός πίνακας ιδιοτήτων για την αρχικοποίηση της κλάσης.
+     */   
+    public function __construct(array $array = [], array $properties = [])
     {
-        /*
-        <English>
-            Calculate the sum of the array elements.
-        </English>
-        <Greek>
-            Υπολογίζει το άθροισμα των στοιχείων του πίνακα.
-        </Greek>
-        */
-        $sum = array_sum($this->array);
-
-        /*
-        <English>
-            Calculate the mean by dividing the sum by the number of elements.
-        </English>
-        <Greek>
-            Υπολογίζει τον μέσο όρο διαιρώντας το άθροισμα με τον αριθμό των στοιχείων.
-        </Greek>
-        */
-        return $sum / count($this->array);
-    }
-
-
-    /**
-     * Calculates the variance of the array.
-     * 
-     * @desc <English>  Calculates the variance of the internal array.
-     * @desc <Greek>    Υπολογίζει τη διασπορά του εσωτερικού πίνακα.
-     * 
-     * @return float <English>  The variance of the array.
-     *               <Greek>    Η διασπορά του πίνακα.
-     */
-    public function calculateVariance(): float
-    {
-        /*
-        <English>
-            Calculate the mean of the array.
-        </English>
-        <Greek>
-            Υπολογίζει τον μέσο όρο του πίνακα.
-        </Greek>
-        */
-        $mean = $this->calculateMean();
-
-        /*
-        <English>
-            Calculate the squared differences from the mean.
-        </English>
-        <Greek>
-            Υπολογίζει τις τετραγωνικές διαφορές από τον μέσο όρο.
-        </Greek>
-        */
-        $squaredDiffs = array_map(fn($value) => pow($value - $mean, 2), $this->array);
-
-        /*
-        <English>
-            Calculate the variance by averaging the squared differences.
-        </English>
-        <Greek>
-            Υπολογίζει τη διασπορά υπολογίζοντας τον μέσο όρο των τετραγωνικών διαφορών.
-        </Greek>
-        */
-        return array_sum($squaredDiffs) / count($this->array);
-    }
-
-
-    /**
-     * Calculates the standard deviation of the array.
-     * 
-     * @desc <English>  Calculates the standard deviation of the internal array.
-     * @desc <Greek>    Υπολογίζει την τυπική απόκλιση του εσωτερικού πίνακα.
-     * 
-     * @return float <English>  The standard deviation of the array.
-     *               <Greek>    Η τυπική απόκλιση του πίνακα.
-     */
-    public function calculateStandardDeviation(): float
-    {
-        /*
-        <English>
-            Calculate the variance of the array.
-        </English>
-        <Greek>
-            Υπολογίζει τη διασπορά του πίνακα.
-        </Greek>
-        */
-        $variance = $this->calculateVariance();
-
-        /*
-        <English>
-            Calculate the standard deviation as the square root of the variance.
-        </English>
-        <Greek>
-            Υπολογίζει την τυπική απόκλιση ως την τετραγωνική ρίζα της διασποράς.
-        </Greek>
-        */
-        return sqrt($variance);
+        parent::__construct($array, $properties);
     }
 
 
@@ -272,6 +178,111 @@ class TArrayAnalysisHandler extends TArrayHandler
         </Greek>
         */
         return array_map(fn($value) => $value >= $threshold ? 'high' : 'low', $this->array);
+    }
+
+
+    /**
+     * Calculates the Pearson correlation coefficient between two arrays.
+     * 
+     * @desc <English>  Calculates the Pearson correlation coefficient between the internal array and another array.
+     * @desc <Greek>    Υπολογίζει τον συντελεστή συσχέτισης Pearson μεταξύ του εσωτερικού πίνακα και ενός άλλου πίνακα.
+     * 
+     * @param array $otherArray <English>  The other array to calculate the correlation with.
+     *                          <Greek>    Ο άλλος πίνακας για τον υπολογισμό της συσχέτισης.
+     * @return float <English>  The Pearson correlation coefficient.
+     *               <Greek>    Ο συντελεστής συσχέτισης Pearson.
+     */
+    public function correlationCoefficient(array $otherArray): float
+    {
+        /*
+        <English>
+            Calculate the means of both arrays.
+        </English>
+        <Greek>
+            Υπολογίζει τους μέσους όρους και των δύο πινάκων.
+        </Greek>
+        */
+        $meanX = $this->mean();
+        $meanY = (new self($otherArray))->mean();
+
+        /*
+        <English>
+            Calculate the numerator and the denominators for the Pearson correlation coefficient.
+        </English>
+        <Greek>
+            Υπολογίζει τον αριθμητή και τους παρονομαστές για τον συντελεστή συσχέτισης Pearson.
+        </Greek>
+        */
+        $numerator = 0;
+        $denominatorX = 0;
+        $denominatorY = 0;
+
+        for ($i = 0; $i < count($this->array); $i++) {
+            $diffX = $this->array[$i] - $meanX;
+            $diffY = $otherArray[$i] - $meanY;
+            $numerator += $diffX * $diffY;
+            $denominatorX += pow($diffX, 2);
+            $denominatorY += pow($diffY, 2);
+        }
+
+        /*
+        <English>
+            Calculate the Pearson correlation coefficient.
+        </English>
+        <Greek>
+            Υπολογίζει τον συντελεστή συσχέτισης Pearson.
+        </Greek>
+        */
+        return $numerator / sqrt($denominatorX * $denominatorY);
+    }  
+
+
+    /**
+     * Calculates the covariance between the internal array and another array.
+     * 
+     * @desc <English>  Calculates the covariance between the internal array and another array.
+     * @desc <Greek>    Υπολογίζει τη συνδιακύμανση μεταξύ του εσωτερικού πίνακα και ενός άλλου πίνακα.
+     * 
+     * @param array $otherArray <English>  The other array to calculate the covariance with.
+     *                          <Greek>    Ο άλλος πίνακας για τον υπολογισμό της συνδιακύμανσης.
+     * @return float <English>  The covariance.
+     *               <Greek>    Η συνδιακύμανση.
+     */
+    public function covariance(array $otherArray): float
+    {
+        $meanX = $this->mean();
+        $meanY = (new self($otherArray))->mean();
+
+        $covariance = 0;
+        for ($i = 0; $i < count($this->array); $i++) {
+            $covariance += ($this->array[$i] - $meanX) * ($otherArray[$i] - $meanY);
+        }
+
+        return $covariance / count($this->array);
+    }
+
+
+    /**
+     * Calculates the entropy of the array.
+     * 
+     * @desc <English>  Calculates the entropy of the internal array, which measures the uncertainty or diversity of the data.
+     * @desc <Greek>    Υπολογίζει την εντροπία του εσωτερικού πίνακα, η οποία μετρά την αβεβαιότητα ή την ποικιλία των δεδομένων.
+     * 
+     * @return float <English>  The entropy of the array.
+     *               <Greek>    Η εντροπία του πίνακα.
+     */
+    public function entropy(): float
+    {
+        $frequency = array_count_values($this->array);
+        $total = count($this->array);
+        $entropy = 0;
+
+        foreach ($frequency as $count) {
+            $probability = $count / $total;
+            $entropy -= $probability * log($probability, 2);
+        }
+
+        return $entropy;
     }
 
 
@@ -322,118 +333,43 @@ class TArrayAnalysisHandler extends TArrayHandler
 
 
     /**
-     * Calculates the median of the array.
+     * Calculates the frequency distribution of the array.
      * 
-     * @desc <English>  Calculates the median of the internal array.
-     * @desc <Greek>    Υπολογίζει τη διαμέσου τιμή του εσωτερικού πίνακα.
+     * @desc <English>  Calculates the frequency distribution of the internal array.
+     * @desc <Greek>    Υπολογίζει τη συχνότητα κατανομής του εσωτερικού πίνακα.
      * 
-     * @return float <English>  The median of the array.
-     *               <Greek>    Η διαμέσου τιμή του πίνακα.
+     * @return array <English>  The frequency distribution of the array.
+     *                <Greek>    Η συχνότητα κατανομής του πίνακα.
      */
-    public function calculateMedian(): float
+    public function frequencyDistribution(): array
     {
-        /*
-        <English>
-            Sort the array.
-        </English>
-        <Greek>
-            Ταξινομεί τον πίνακα.
-        </Greek>
-        */
-        $sortedArray = $this->array;
-        sort($sortedArray);
-        $count = count($sortedArray);
-        
-        /*
-        <English>
-            Calculate the median based on the count of elements.
-        </English>
-        <Greek>
-            Υπολογίζει τη διαμέσου τιμή βάσει του αριθμού των στοιχείων.
-        </Greek>
-        */
-        $mid = (int) ($count / 2);
-        if ($count % 2 === 0) {
-            return ($sortedArray[$mid - 1] + $sortedArray[$mid]) / 2;
-        }
-        return $sortedArray[$mid];
+        return array_count_values($this->array);
     }
+
 
     /**
-     * Calculates the mode of the array.
+     * Automatically generates a report of basic statistical measures for the array.
      * 
-     * @desc <English>  Calculates the mode of the internal array.
-     * @desc <Greek>    Υπολογίζει τη συχνότερα εμφανιζόμενη τιμή του εσωτερικού πίνακα.
+     * @desc <English>  Automatically generates a report of basic statistical measures for the internal array.
+     * @desc <Greek>    Αυτόματα δημιουργεί μια αναφορά βασικών στατιστικών μέτρων για τον εσωτερικό πίνακα.
      * 
-     * @return mixed <English>  The mode of the array.
-     *               <Greek>    Η συχνότερα εμφανιζόμενη τιμή του πίνακα.
+     * @return array <English>  A report of basic statistical measures.
+     *                <Greek>    Μια αναφορά βασικών στατιστικών μέτρων.
      */
-    public function calculateMode(): mixed
+    public function generateStatisticsReport(): array
     {
-        /*
-        <English>
-            Calculate the frequency of each element.
-        </English>
-        <Greek>
-            Υπολογίζει τη συχνότητα εμφάνισης κάθε στοιχείου.
-        </Greek>
-        */
-        $frequency = array_count_values($this->array);
+        return [
+            'entropy' => $this->entropy(),
+            'mean' => $this->mean(),
+            'median' => $this->median(),
+            'mode' => $this->mode(),
+            'range' => $this->range(),
+            'standard_deviation' => $this->standardDeviation(),
+            'sum_of_squares' => $this->sumOfSquares(),
+            'variance' => $this->variance()
+        ];
+    } 
 
-        /*
-        <English>
-            Find the element with the highest frequency.
-        </English>
-        <Greek>
-            Βρίσκει το στοιχείο με τη μεγαλύτερη συχνότητα εμφάνισης.
-        </Greek>
-        */
-        $maxFrequency = max($frequency);
-        $modes = array_filter($frequency, fn($freq) => $freq === $maxFrequency);
-
-        /*
-        <English>
-            Return the mode(s).
-        </English>
-        <Greek>
-            Επιστρέφει τη συχνότερα εμφανιζόμενη τιμή.
-        </Greek>
-        */
-        return array_keys($modes);
-    }
-
-    /**
-     * Calculates the range of the array.
-     * 
-     * @desc <English>  Calculates the range of the internal array.
-     * @desc <Greek>    Υπολογίζει το εύρος του εσωτερικού πίνακα.
-     * 
-     * @return float <English>  The range of the array.
-     *               <Greek>    Το εύρος του πίνακα.
-     */
-    public function calculateRange(): float
-    {
-        /*
-        <English>
-            Find the maximum and minimum values.
-        </English>
-        <Greek>
-            Βρίσκει τη μέγιστη και ελάχιστη τιμή.
-        </Greek>
-        */
-        $max = $this->findMax();
-        $min = $this->findMin();
-
-        /*
-        <English>
-            Calculate and return the range.
-        </English>
-        <Greek>
-            Υπολογίζει και επιστρέφει το εύρος.
-        </Greek>
-        */
-        return $max - $min;
-    }
 
     /**
      * Groups the array elements based on a callback function.
@@ -473,61 +409,122 @@ class TArrayAnalysisHandler extends TArrayHandler
 
         return $grouped;
     }
+  
 
     /**
-     * Calculates the Pearson correlation coefficient between two arrays.
+     * Calculates the mean (average) of the array.
      * 
-     * @desc <English>  Calculates the Pearson correlation coefficient between the internal array and another array.
-     * @desc <Greek>    Υπολογίζει τον συντελεστή συσχέτισης Pearson μεταξύ του εσωτερικού πίνακα και ενός άλλου πίνακα.
+     * @desc <English>  Calculates the mean (average) of the internal array.
+     * @desc <Greek>    Υπολογίζει τον μέσο όρο του εσωτερικού πίνακα.
      * 
-     * @param array $otherArray <English>  The other array to calculate the correlation with.
-     *                          <Greek>    Ο άλλος πίνακας για τον υπολογισμό της συσχέτισης.
-     * @return float <English>  The Pearson correlation coefficient.
-     *               <Greek>    Ο συντελεστής συσχέτισης Pearson.
+     * @return float <English>  The mean of the array.
+     *               <Greek>    Ο μέσος όρος του πίνακα.
      */
-    public function calculateCorrelationCoefficient(array $otherArray): float
+    public function mean(): float
     {
         /*
         <English>
-            Calculate the means of both arrays.
+            Calculate the sum of the array elements.
         </English>
         <Greek>
-            Υπολογίζει τους μέσους όρους και των δύο πινάκων.
+            Υπολογίζει το άθροισμα των στοιχείων του πίνακα.
         </Greek>
         */
-        $meanX = $this->calculateMean();
-        $meanY = (new self($otherArray))->calculateMean();
+        $sum = array_sum($this->array);
 
         /*
         <English>
-            Calculate the numerator and the denominators for the Pearson correlation coefficient.
+            Calculate the mean by dividing the sum by the number of elements.
         </English>
         <Greek>
-            Υπολογίζει τον αριθμητή και τους παρονομαστές για τον συντελεστή συσχέτισης Pearson.
+            Υπολογίζει τον μέσο όρο διαιρώντας το άθροισμα με τον αριθμό των στοιχείων.
         </Greek>
         */
-        $numerator = 0;
-        $denominatorX = 0;
-        $denominatorY = 0;
+        return $sum / count($this->array);
+    }
 
-        for ($i = 0; $i < count($this->array); $i++) {
-            $diffX = $this->array[$i] - $meanX;
-            $diffY = $otherArray[$i] - $meanY;
-            $numerator += $diffX * $diffY;
-            $denominatorX += pow($diffX, 2);
-            $denominatorY += pow($diffY, 2);
+
+    /**
+     * Calculates the median of the array.
+     * 
+     * @desc <English>  Calculates the median of the internal array.
+     * @desc <Greek>    Υπολογίζει τη διαμέσου τιμή του εσωτερικού πίνακα.
+     * 
+     * @return float <English>  The median of the array.
+     *               <Greek>    Η διαμέσου τιμή του πίνακα.
+     */
+    public function median(): float
+    {
+        /*
+        <English>
+            Sort the array.
+        </English>
+        <Greek>
+            Ταξινομεί τον πίνακα.
+        </Greek>
+        */
+        $sortedArray = $this->array;
+        sort($sortedArray);
+        $count = count($sortedArray);
+        
+        /*
+        <English>
+            Calculate the median based on the count of elements.
+        </English>
+        <Greek>
+            Υπολογίζει τη διαμέσου τιμή βάσει του αριθμού των στοιχείων.
+        </Greek>
+        */
+        $mid = (int) ($count / 2);
+        if ($count % 2 === 0) {
+            return ($sortedArray[$mid - 1] + $sortedArray[$mid]) / 2;
         }
+        return $sortedArray[$mid];
+    }
+
+
+    /**
+     * Calculates the mode of the array.
+     * 
+     * @desc <English>  Calculates the mode of the internal array.
+     * @desc <Greek>    Υπολογίζει τη συχνότερα εμφανιζόμενη τιμή του εσωτερικού πίνακα.
+     * 
+     * @return mixed <English>  The mode of the array.
+     *               <Greek>    Η συχνότερα εμφανιζόμενη τιμή του πίνακα.
+     */
+    public function mode(): mixed
+    {
+        /*
+        <English>
+            Calculate the frequency of each element.
+        </English>
+        <Greek>
+            Υπολογίζει τη συχνότητα εμφάνισης κάθε στοιχείου.
+        </Greek>
+        */
+        $frequency = array_count_values($this->array);
 
         /*
         <English>
-            Calculate the Pearson correlation coefficient.
+            Find the element with the highest frequency.
         </English>
         <Greek>
-            Υπολογίζει τον συντελεστή συσχέτισης Pearson.
+            Βρίσκει το στοιχείο με τη μεγαλύτερη συχνότητα εμφάνισης.
         </Greek>
         */
-        return $numerator / sqrt($denominatorX * $denominatorY);
-    }  
+        $maxFrequency = max($frequency);
+        $modes = array_filter($frequency, fn($freq) => $freq === $maxFrequency);
+
+        /*
+        <English>
+            Return the mode(s).
+        </English>
+        <Greek>
+            Επιστρέφει τη συχνότερα εμφανιζόμενη τιμή.
+        </Greek>
+        */
+        return array_keys($modes);
+    }
 
 
     /**
@@ -541,7 +538,7 @@ class TArrayAnalysisHandler extends TArrayHandler
      * @return array <English>  The moving averages of the array.
      *                <Greek>    Οι κινητοί μέσοι όροι του πίνακα.
      */
-    public function calculateMovingAverage(int $windowSize): array
+    public function movingAverage(int $windowSize): array
     {
         $movingAverages = [];
         for ($i = 0; $i <= count($this->array) - $windowSize; $i++) {
@@ -553,42 +550,128 @@ class TArrayAnalysisHandler extends TArrayHandler
 
 
     /**
-     * Calculates the frequency distribution of the array.
+     * Calculates the range of the array.
      * 
-     * @desc <English>  Calculates the frequency distribution of the internal array.
-     * @desc <Greek>    Υπολογίζει τη συχνότητα κατανομής του εσωτερικού πίνακα.
+     * @desc <English>  Calculates the range of the internal array.
+     * @desc <Greek>    Υπολογίζει το εύρος του εσωτερικού πίνακα.
      * 
-     * @return array <English>  The frequency distribution of the array.
-     *                <Greek>    Η συχνότητα κατανομής του πίνακα.
+     * @return float <English>  The range of the array.
+     *               <Greek>    Το εύρος του πίνακα.
      */
-    public function calculateFrequencyDistribution(): array
+    public function range(): float
     {
-        return array_count_values($this->array);
+        /*
+        <English>
+            Find the maximum and minimum values.
+        </English>
+        <Greek>
+            Βρίσκει τη μέγιστη και ελάχιστη τιμή.
+        </Greek>
+        */
+        $max = $this->findMax();
+        $min = $this->findMin();
+
+        /*
+        <English>
+            Calculate and return the range.
+        </English>
+        <Greek>
+            Υπολογίζει και επιστρέφει το εύρος.
+        </Greek>
+        */
+        return $max - $min;
     }
 
 
     /**
-     * Calculates the covariance between the internal array and another array.
+     * Calculates the standard deviation of the array.
      * 
-     * @desc <English>  Calculates the covariance between the internal array and another array.
-     * @desc <Greek>    Υπολογίζει τη συνδιακύμανση μεταξύ του εσωτερικού πίνακα και ενός άλλου πίνακα.
+     * @desc <English>  Calculates the standard deviation of the internal array.
+     * @desc <Greek>    Υπολογίζει την τυπική απόκλιση του εσωτερικού πίνακα.
      * 
-     * @param array $otherArray <English>  The other array to calculate the covariance with.
-     *                          <Greek>    Ο άλλος πίνακας για τον υπολογισμό της συνδιακύμανσης.
-     * @return float <English>  The covariance.
-     *               <Greek>    Η συνδιακύμανση.
+     * @return float <English>  The standard deviation of the array.
+     *               <Greek>    Η τυπική απόκλιση του πίνακα.
      */
-    public function calculateCovariance(array $otherArray): float
+    public function standardDeviation(): float
     {
-        $meanX = $this->calculateMean();
-        $meanY = (new self($otherArray))->calculateMean();
+        /*
+        <English>
+            Calculate the variance of the array.
+        </English>
+        <Greek>
+            Υπολογίζει τη διασπορά του πίνακα.
+        </Greek>
+        */
+        $variance = $this->variance();
 
-        $covariance = 0;
-        for ($i = 0; $i < count($this->array); $i++) {
-            $covariance += ($this->array[$i] - $meanX) * ($otherArray[$i] - $meanY);
-        }
+        /*
+        <English>
+            Calculate the standard deviation as the square root of the variance.
+        </English>
+        <Greek>
+            Υπολογίζει την τυπική απόκλιση ως την τετραγωνική ρίζα της διασποράς.
+        </Greek>
+        */
+        return sqrt($variance);
+    }
 
-        return $covariance / count($this->array);
+
+    /**
+     * Calculates the sum of squares of the array elements.
+     * 
+     * @desc <English>  Calculates the sum of squares of the internal array elements.
+     * @desc <Greek>    Υπολογίζει το άθροισμα των τετραγώνων των στοιχείων του εσωτερικού πίνακα.
+     * 
+     * @return float <English>  The sum of squares of the array elements.
+     *               <Greek>    Το άθροισμα των τετραγώνων των στοιχείων του πίνακα.
+     */
+    public function sumOfSquares(): float
+    {
+        return array_reduce($this->array, fn($carry, $item) => $carry + pow($item, 2), 0);
+    }
+
+
+
+    /**
+     * Calculates the variance of the array.
+     * 
+     * @desc <English>  Calculates the variance of the internal array.
+     * @desc <Greek>    Υπολογίζει τη διασπορά του εσωτερικού πίνακα.
+     * 
+     * @return float <English>  The variance of the array.
+     *               <Greek>    Η διασπορά του πίνακα.
+     */
+    public function variance(): float
+    {
+        /*
+        <English>
+            Calculate the mean of the array.
+        </English>
+        <Greek>
+            Υπολογίζει τον μέσο όρο του πίνακα.
+        </Greek>
+        */
+        $mean = $this->mean();
+
+        /*
+        <English>
+            Calculate the squared differences from the mean.
+        </English>
+        <Greek>
+            Υπολογίζει τις τετραγωνικές διαφορές από τον μέσο όρο.
+        </Greek>
+        */
+        $squaredDiffs = array_map(fn($value) => pow($value - $mean, 2), $this->array);
+
+        /*
+        <English>
+            Calculate the variance by averaging the squared differences.
+        </English>
+        <Greek>
+            Υπολογίζει τη διασπορά υπολογίζοντας τον μέσο όρο των τετραγωνικών διαφορών.
+        </Greek>
+        */
+        return array_sum($squaredDiffs) / count($this->array);
     }
 
 
@@ -603,7 +686,7 @@ class TArrayAnalysisHandler extends TArrayHandler
      * @return float <English>  The weighted average of the array.
      *               <Greek>    Ο σταθμισμένος μέσος όρος του πίνακα.
      */
-    public function calculateWeightedAverage(array $weights): float
+    public function weightedAverage(array $weights): float
     {
         $weightedSum = 0;
         $sumOfWeights = array_sum($weights);
@@ -614,69 +697,6 @@ class TArrayAnalysisHandler extends TArrayHandler
 
         return $weightedSum / $sumOfWeights;
     }
-
-
-    /**
-     * Calculates the sum of squares of the array elements.
-     * 
-     * @desc <English>  Calculates the sum of squares of the internal array elements.
-     * @desc <Greek>    Υπολογίζει το άθροισμα των τετραγώνων των στοιχείων του εσωτερικού πίνακα.
-     * 
-     * @return float <English>  The sum of squares of the array elements.
-     *               <Greek>    Το άθροισμα των τετραγώνων των στοιχείων του πίνακα.
-     */
-    public function calculateSumOfSquares(): float
-    {
-        return array_reduce($this->array, fn($carry, $item) => $carry + pow($item, 2), 0);
-    }
-
-
-    /**
-     * Calculates the entropy of the array.
-     * 
-     * @desc <English>  Calculates the entropy of the internal array, which measures the uncertainty or diversity of the data.
-     * @desc <Greek>    Υπολογίζει την εντροπία του εσωτερικού πίνακα, η οποία μετρά την αβεβαιότητα ή την ποικιλία των δεδομένων.
-     * 
-     * @return float <English>  The entropy of the array.
-     *               <Greek>    Η εντροπία του πίνακα.
-     */
-    public function calculateEntropy(): float
-    {
-        $frequency = array_count_values($this->array);
-        $total = count($this->array);
-        $entropy = 0;
-
-        foreach ($frequency as $count) {
-            $probability = $count / $total;
-            $entropy -= $probability * log($probability, 2);
-        }
-
-        return $entropy;
-    }
-
-
-    /**
-     * Automatically generates a report of basic statistical measures for the array.
-     * 
-     * @desc <English>  Automatically generates a report of basic statistical measures for the internal array.
-     * @desc <Greek>    Αυτόματα δημιουργεί μια αναφορά βασικών στατιστικών μέτρων για τον εσωτερικό πίνακα.
-     * 
-     * @return array <English>  A report of basic statistical measures.
-     *                <Greek>    Μια αναφορά βασικών στατιστικών μέτρων.
-     */
-    public function generateStatisticsReport(): array
-    {
-        return [
-            'mean' => $this->calculateMean(),
-            'median' => $this->calculateMedian(),
-            'mode' => $this->calculateMode(),
-            'range' => $this->calculateRange(),
-            'variance' => $this->calculateVariance(),
-            'standard_deviation' => $this->calculateStandardDeviation(),
-            'sum_of_squares' => $this->calculateSumOfSquares(),
-            'entropy' => $this->calculateEntropy()
-        ];
-    }    
 
 }
 /******************************************************************************

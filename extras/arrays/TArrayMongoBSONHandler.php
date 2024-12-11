@@ -20,16 +20,18 @@
  * @subpackage         	: EHandles MongoDB BSON format arrays.
  * @source             	: afw/extras/arrays/TArrayMongoBSONHandler.php
  * @fileNo             	: 
- * @version            	: 24.0.3
+ * @version            	: 24.0.5
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-02 07:00:00 UTC+3 
+ * @updated            	: 2024-12-10 07:00:00 UTC+3
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
  * 
  * @since PHP 8.2.0
  */
-namespace ASCOOS\FRAMEWORK\Arrays\Extras\MongoBSON;
+namespace ASCOOS\FRAMEWORK\Extras\Arrays\MongoBSON;
+defined ("ALEXSOFT_RUN_CMS") or die("Prohibition of Access.");
+defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
 
 use ASCOOS\FRAMEWORK\Kernel\Arrays\TArrayHandler;
 use MongoDB\BSON\Document;
@@ -47,7 +49,7 @@ use MongoDB\BSON\Document;
  * @summary Handles MongoDB BSON format arrays.
  * 
  * [ METHODS ]
- * @method void toMongoBSON(string $filePath)         Converts array to BSON format and saves to file.
+ * @method int|false toMongoBSON(string $filePath)    Converts array to BSON format and saves to file.
  * @method void fromMongoBSON(string $filePath)       Converts BSON format to array.
  * 
  * [ INHERITANCE METHODS ]
@@ -118,7 +120,7 @@ class TArrayMongoBSONHandler extends TArrayHandler
      *                         <Greek>    Η διαδρομή προς το αρχείο όπου θα αποθηκευτεί το περιεχόμενο BSON.
      * @return void
      */
-    public function toMongoBSON(string $filePath): void
+    public function toMongoBSON(string $filePath): int|false
     {
         /*
         <English>
@@ -138,7 +140,7 @@ class TArrayMongoBSONHandler extends TArrayHandler
             Εγγράφει το BSON στο καθορισμένο αρχείο.
         </Greek>
         */
-        file_put_contents($filePath, $bson);
+        return file_put_contents($filePath, $bson);
     }
  
     /**

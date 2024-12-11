@@ -20,16 +20,16 @@
  * @subpackage         	: Handles the creation of graphical representations from array data.
  * @source             	: afw/extras/arrays/TArrayGraphHandler.php
  * @fileNo             	: 
- * @version            	: 24.0.4
+ * @version            	: 24.0.5
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-05 07:00:00 UTC+3 
+ * @updated            	: 2024-12-10 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
  * 
  * @since PHP 8.2.0
  */
-namespace ASCOOS\FRAMEWORK\Arrays\Extras\Graphs;
+namespace ASCOOS\FRAMEWORK\Extras\Arrays\Graphs;
 defined ("ALEXSOFT_RUN_CMS") or die("Prohibition of Access.");
 defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
 
@@ -145,9 +145,7 @@ class TArrayGraphHandler extends TArrayHandler
     public function __construct(array $array = [], array $properties = ['width'=>800, 'height'=>600]) {
         parent::__construct($array, $properties);
     }
-
- 
-
+    
 
     /**
      * Creates an area chart from the array data.
