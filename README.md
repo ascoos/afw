@@ -2,7 +2,7 @@
 
 # ASCOOS Framework 24'
 
-![Website](https://img.shields.io/website?url=https%3A%2F%2Fwww.ascoos.com)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fwww.ascoos.com)](https://www.ascoos.com)
 ![GitHub top language](https://img.shields.io/github/languages/top/ascoos/afw)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/ascoos/afw/total?color=%230E80C0) 
 ![GitHub Release](https://img.shields.io/github/v/release/ascoos/afw) 
