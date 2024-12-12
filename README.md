@@ -1,16 +1,15 @@
 ![Ascoos Cms](https://dl.ascoos.com/images/ascoos.png)
 
-# ASCOOS Framework
+# ASCOOS Framework 24'
 
+![Website](https://img.shields.io/website?url=https%3A%2F%2Fwww.ascoos.com)
+![GitHub top language](https://img.shields.io/github/languages/top/ascoos/afw)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/ascoos/afw/total?color=%230E80C0) 
 ![GitHub Release](https://img.shields.io/github/v/release/ascoos/afw) 
 ![GitHub Release Date](https://img.shields.io/github/release-date/ascoos/afw?color=%230E80C0)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ascoos/afw) 
-[![Ascoos Framework 24 - total lines](https://tokei.rs/b1/github/ascoos/afw?category=lines)](https://github.com/ascoos/afw)
-[![Ascoos Framework 24 - source code lines](https://tokei.rs/b1/github/ascoos/afw?category=code)](https://github.com/ascoos/afw) 
-[![Ascoos Framework 24 - files in repository](https://tokei.rs/b1/github/ascoos/afw?category=files)](https://github.com/ascoos/afw)
 
-
+***
 
 ## Description
 
@@ -37,12 +36,6 @@ Part of the `Ascoos Framework`, it is provided as source code to make it easier 
 [![Download ascoos-framework](https://img.shields.io/sourceforge/dd/ascoos-fw.svg)](https://sourceforge.net/projects/ascoos-fw/files/latest/download)
 
 [![Download Ascoos Framework 24'](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/ascoos-fw/files/latest/download)
-
-***
-
-## Awards
-
-No Exists now
 
 ***
 
