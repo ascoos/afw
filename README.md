@@ -9,8 +9,6 @@
 ![GitHub Release Date](https://img.shields.io/github/release-date/ascoos/afw?color=%230E80C0)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ascoos/afw) 
 
-***
-
 ## Description
 
 This package is a very small part of the `Ascoos Cms` custom core for use with `PHP 8.2` or later.
@@ -27,7 +25,6 @@ Version 24 only works on `PHP 8.2 or later`, as the core has been redesigned fro
 
 Part of the `Ascoos Framework`, it is provided as source code to make it easier for Web Developers to understand how to write the extensions they will create for `Ascoos Cms`.
 
-***
 
 ### SOURCEFORGE
 [![Download ascoos-framework](https://img.shields.io/sourceforge/dt/ascoos-fw.svg)](https://sourceforge.net/projects/ascoos-fw/files/latest/download)
@@ -37,7 +34,7 @@ Part of the `Ascoos Framework`, it is provided as source code to make it easier 
 
 [![Download Ascoos Framework 24'](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/ascoos-fw/files/latest/download)
 
-***
+
 
 ## Contributing
 
@@ -54,7 +51,7 @@ Please send any feedback or suggestions to [@ascoos](https://twitter.com/ascoos)
 
 [![AGL-F](https://img.shields.io/badge/License-AGLF-blue.svg)](http://docs.ascoos.com/lics/ascoos/AGL-F.html)
 
-***
+
 
 ## Download
 
@@ -62,9 +59,7 @@ Please send any feedback or suggestions to [@ascoos](https://twitter.com/ascoos)
 [![Download Ascoos Framework 24 from GitHub](https://img.shields.io/badge/GitHub-afw-blue.svg)](https://github.com/ascoos/afw/releases) 
 [![Download Ascoos Framework 24 from PHPClasses](https://img.shields.io/badge/php-classes-blue.svg)](https://www.phpclasses.org/package/13408.html) 
 
-***
 
-<br>
 
 # Installation and use
 
@@ -77,11 +72,7 @@ $path = '[YOUR SITE PATH]';
 include $path . '/afw/autoload.php';
 ```
 
-<br>
 
-***
-
-<br>
 
 ## Ascoos Framework Namespace
 ```php
@@ -93,7 +84,4 @@ use...
 ```php
     use ASCOOS\FRAMEWORK\Kernel\Core\TObject;
 ```
-
-***
-
 
