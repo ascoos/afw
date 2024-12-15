@@ -20,9 +20,9 @@
  * @subpackage         	: Handles Dates operations.
  * @source             	: afw/kernel/coreDates.php
  * @fileNo             	: 
- * @version            	: 24.0.5
+ * @version            	: 24.0.6
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-10 07:00:00 UTC+3 
+ * @updated            	: 2024-12-15 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -94,20 +94,22 @@ use Exception;
  * @method string subtractDays(string $date, int $days, string $format='Y-m-d')   Subtract a specified number of days from a date.
  * 
  * [ INHERITANCE METHODS ]
- * @method string __toString()                                                  Returns a string containing the name of this class.
- * @method bool Free(object $object)                                            Frees the memory of the Object or its clone.
- * @method bool FreeProperties(object $object)                                  Delete and Frees up memory for all class properties.
- * @method bool getClassDeprecated()                                            Returns true if class is deprecated, otherwise false.
- * @method int getClassVersion()                                                We get the version of the class.
- * @method array getProperties()                                                Returns the table of class properties.
- * @method mixed getProperty(string $property)                                  Returns the content of the requested property.
- * @method ?array getPublicProperties()                                         Returns an array of the public properties of the class.
- * @method int|false getVersion(string $property)                               Get the version as an integer.
- * @method string|false getVersionStr(string $property)                         Get the version as a formatted string.
- * @method bool isExecutable(int $currentVersion, int $currentPHPVersion)       Checks whether the current version of the class is executable according to the minimum and maximum versions you specify.
- * @method void setProjectVersion(int|string $version = -1)                     Sets the project version.
- * @method void setProperties(array $properties)                                Set the properties of the class.
- * @method void setProperty(string $property, mixed $value)                     Set a single property of the class.
+ * @method string __toString()                                             Returns a string containing the name of this class.
+ * @method bool Free(object $object)                                       Frees the memory of the Object or its clone.
+ * @method bool FreeProperties(object $object)                             Delete and Frees up memory for all class properties.
+ * @method bool getClassDeprecated()                                       Returns true if class is deprecated, otherwise false.
+ * @method int getClassVersion()                                           We get the version of the class.
+ * @method mixed getDeepProperty(array $keys, ?array $array = null)        Gets a property at any depth within the properties array.
+ * @method array getProperties()                                           Returns the table of class properties.
+ * @method mixed getProperty(string $property)                             Returns the content of the requested property.
+ * @method ?array getPublicProperties()                                    Returns an array of the public properties of the class.
+ * @method int|false getVersion(string $property)                          Get the version as an integer.       
+ * @method string|false getVersionStr(string $property)                    Get the version as a formatted string.
+ * @method bool isExecutable(int $currentVersion, int $currentPHPVersion)  Checks whether the current version of the class is executable according to the minimum and maximum versions you specify.
+ * @method void setDeepProperty(array $keys, mixed $value, ?array &$array = null)                       Sets a property at any depth within the properties array.
+ * @method void setProjectVersion(int|string $version = -1)                                             Sets the project version.
+ * @method bool setProperties(array $properties, string|int|null $property_key = null)                  Recursively sets properties of the class, merging sub-arrays without overwriting other data.
+ * @method bool setProperty(string|int $property, mixed $value, string|int|null $property_key = null)   Set a single property of the class.
  */
 class TDatesHandler extends TObject {
     // [ PROPERTIES]

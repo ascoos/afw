@@ -20,9 +20,9 @@
  * @subpackage         	: Core Disks Library
  * @source             	: afw/kernel/coreDisks.php
  * @fileNo             	: 
- * @version            	: 24.0.3
+ * @version            	: 24.0.6
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-02 07:00:00 UTC+3 
+ * @updated            	: 2024-12-15 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -58,23 +58,27 @@ use ASCOOS\FRAMEWORK\Kernel\Core\TObject;
  * 
  * 
  * [ INHERITANCE METHODS ]
- * @method string __toString()                      Returns a string containing the name of this class.
- * @method bool Free(object $object)                Frees the memory of the Object or its clone.
- * @method bool FreeProperties(object $object)      Delete and Frees up memory for all class properties.
- * @method bool getClassDeprecated()                Returns true if class is deprecated, otherwise false.
- * @method int getClassVersion()                    We get the version of the class.
- * @method array getProperties()                    Returns the table of class properties.
- * @method mixed getProperty(string $property)      Returns the content of the requested property.
- * @method ?array getPublicProperties()             Returns an array of the public properties of the class.
- * @method int|false getVersion(string $property)   Get the version as an integer.       
- * @method string|false getVersionStr(string $property)     Get the version as a formatted string.
+ * @method string __toString()                                             Returns a string containing the name of this class.
+ * @method bool Free(object $object)                                       Frees the memory of the Object or its clone.
+ * @method bool FreeProperties(object $object)                             Delete and Frees up memory for all class properties.
+ * @method bool getClassDeprecated()                                       Returns true if class is deprecated, otherwise false.
+ * @method int getClassVersion()                                           We get the version of the class.
+ * @method mixed getDeepProperty(array $keys, ?array $array = null)        Gets a property at any depth within the properties array.
+ * @method array getProperties()                                           Returns the table of class properties.
+ * @method mixed getProperty(string $property)                             Returns the content of the requested property.
+ * @method ?array getPublicProperties()                                    Returns an array of the public properties of the class.
+ * @method int|false getVersion(string $property)                          Get the version as an integer.       
+ * @method string|false getVersionStr(string $property)                    Get the version as a formatted string.
  * @method bool isExecutable(int $currentVersion, int $currentPHPVersion)  Checks whether the current version of the class is executable according to the minimum and maximum versions you specify.
- * @method void setProjectVersion(int|string $version = -1)     Sets the project version.
- * @method void setProperties(array $properties)    Set the properties of the class.
- * @method void setProperty(string $property, mixed $value)   Set a single property of the class.
+ * @method void setDeepProperty(array $keys, mixed $value, ?array &$array = null)                       Sets a property at any depth within the properties array.
+ * @method void setProjectVersion(int|string $version = -1)                                             Sets the project version.
+ * @method bool setProperties(array $properties, string|int|null $property_key = null)                  Recursively sets properties of the class, merging sub-arrays without overwriting other data.
+ * @method bool setProperty(string|int $property, mixed $value, string|int|null $property_key = null)   Set a single property of the class.
  */
-use ASCOOS\FRAMEWORK\Kernel\Implementation\TDriveInfo\CoreDisks_TDriveInfo_implementation;
-use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\func_formatBytes;
+use ASCOOS\FRAMEWORK\Kernel\Implementation\{
+    TDriveInfo\CoreDisks_TDriveInfo_implementation,
+    Methods\func_formatBytes
+};
 class TDriveInfo extends TObject 
 {
     // [ PROPERTIES]   

@@ -20,9 +20,9 @@
  * @subpackage         	: Core Functions Library
  * @source             	: afw/kernel/coreFunctions.php
  * @fileNo             	: 
- * @version            	: 24.0.3
+ * @version            	: 24.0.6
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-02 07:00:00 UTC+3 
+ * @updated            	: 2024-12-15 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -57,6 +57,8 @@ use ASCOOS\FRAMEWORK\Kernel\Core\TError;
  * @param int $bytes
  * @param int $precision = 2    [optional] The optional number of decimal digits.
  * @return string
+ * 
+ * @version 24.0.0
  */
 function formatBytes($bytes, $precision = 2) {
     $units = array('B', 'KB', 'MB', 'GB', 'TB');
@@ -78,6 +80,8 @@ function formatBytes($bytes, $precision = 2) {
  * 
  * @param mixed $var    The Variable
  * @return string|false
+ * 
+ * @version 24.0.0
  */
 function vn($var): string|false
 {
@@ -97,6 +101,8 @@ function vn($var): string|false
  * 
  * @param mixed $number     The number to be checked.
  * @return bool             Returns true if even, otherwise false.
+ * 
+ * @version 24.0.0
  */
 function is_even($number): bool
 {
@@ -110,6 +116,8 @@ function is_even($number): bool
  * 
  * @param mixed $number     The number to be checked.
  * @return bool             Returns true if odd, otherwise false.
+ * 
+ * @version 24.0.0
  */
 function is_odd($number): bool
 {
@@ -129,6 +137,8 @@ function is_odd($number): bool
  *                      <Greek>    Ο πίνακας που θα ελεγχθεί.
  * @return bool <English>  Returns true if the array is empty, otherwise false.
  *               <Greek>    Επιστρέφει true αν ο πίνακας είναι κενός, αλλιώς false.
+ * 
+ * @version 24.0.0
  */
 function array_is_empty(array $array): bool
 {
@@ -163,6 +173,8 @@ function array_is_empty(array $array): bool
  *                     <Greek> Η μάσκα για τη μορφή της έκδοσης.
  * @return string <English> The version format as a string.
  *                <Greek> Η μορφή της έκδοσης ως string.
+ * 
+ * @version 24.0.0
  */
 function intToVersionString(int $number, string $mask = 'X.XX.XX'): string {
     /*
@@ -301,6 +313,8 @@ function intToVersionString(int $number, string $mask = 'X.XX.XX'): string {
  *                     <Greek> Η μάσκα για τη μορφή της έκδοσης.
  * @return int <English> The integer number resulting from the conversion.
  *             <Greek> Ο ακέραιος αριθμός που προκύπτει από τη μετατροπή.
+ * 
+ * @version 24.0.0
  */
 function versionStringToInt(string $versionString, string $mask = 'X.XX.XX'): int {
     /*

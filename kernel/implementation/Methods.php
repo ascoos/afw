@@ -40,6 +40,8 @@ trait func_formatBytes {
      * @param int $bytes
      * @param int $precision = 2    [optional] The optional number of decimal digits.
      * @return string
+     * 
+     * @version 24.0.0
      */
     private function formatBytes($bytes, $precision = 2): string {
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
@@ -61,6 +63,8 @@ trait func_free {
      * 
      * @param object $object    Object of class for free
      * @return bool
+     * 
+     * @version 24.0.0
      */
     public function Free(object $object): bool {
         if (is_object($object)) {
@@ -80,6 +84,8 @@ trait func_FreeProperties {
      * Delete and Frees up memory for all class properties.
      * @param object $object
      * @return bool
+     * 
+     * @version 24.0.0
      */
     public function FreeProperties(object $object): bool
     {
@@ -109,6 +115,8 @@ trait func_toString {
      * @return string 
      * @desc <English>  Returns a string containing the name of this class.
      * @desc <Greek>    Επιστρέφει μια συμβολοσειρά που περιέχει το όνομα αυτής της κλάσης.
+     * 
+     * @version 24.0.0
      */
     public function __toString(): string 
     {

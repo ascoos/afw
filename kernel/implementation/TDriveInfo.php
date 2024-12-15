@@ -36,17 +36,37 @@ defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
 trait CoreDisks_TDriveInfo_implementation 
 {
 
+    /**
+     * Summary of setUser
+     * @param mixed $User
+     * @return void
+     * 
+     * @version 24.0.0
+     */
     public function setUser(?string $User=null): void 
     {
         $this->user = $User;
     }
     
+    /**
+     * Summary of execute
+     * @return array
+     * 
+     * @version 24.0.0
+     */
     public function execute(): array 
     {
         $this->drives = $this->detectDrives($this->user);
         return $this->getDriveInfo();
     }
 
+    /**
+     * Summary of detectDrives
+     * @param mixed $User
+     * @return array
+     * 
+     * @version 24.0.0
+     */
     private function detectDrives(?string $User=null): array 
     {
         $drives = [];
@@ -76,6 +96,12 @@ trait CoreDisks_TDriveInfo_implementation
         return $drives;
     }
 
+    /**
+     * Summary of getDriveInfo
+     * @return array
+     * 
+     * @version 24.0.0
+     */
     public function getDriveInfo(): array
     {
         $driveInfo = [];
@@ -100,6 +126,12 @@ trait CoreDisks_TDriveInfo_implementation
     } 
     
     
+    /**
+     * Summary of getDrivesSize
+     * @return array
+     * 
+     * @version 24.0.0
+     */
     public function getDrivesSize(): array
     {
         $driveSize = [];

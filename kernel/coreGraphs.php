@@ -208,12 +208,15 @@ final class TColorHandler {
      *                      <Greek> Ο παράγοντας για τη ρύθμιση της φωτεινότητας.
      * @return array <English> The adjusted color in RGB format.
      *               <Greek> Το ρυθμισμένο χρώμα σε μορφή RGB.
+     * 
+     * @version 24.0.0
      */
     public static function adjustBrightness($color, $factor) {
         $hsv = self::rgbToHsv($color[0], $color[1], $color[2]);
         $hsv[2] = min(1, max(0, $hsv[2] * $factor));
         return self::hsvToRgb($hsv[0], $hsv[1], $hsv[2]);
     }
+
 
     /**
      * Calculates the distance between two colors.
@@ -236,6 +239,7 @@ final class TColorHandler {
         );
     }
 
+
     /**
      * Generates the complementary color.
      * 
@@ -246,6 +250,8 @@ final class TColorHandler {
      *                     <Greek> Το βασικό χρώμα σε μορφή RGB.
      * @return array <English> The complementary color in RGB format.
      *               <Greek> Το συμπληρωματικό χρώμα σε μορφή RGB.
+     * 
+     * @version 24.0.0
      */
     public static function complementaryColor($color) {
         $hsv = self::rgbToHsv($color[0], $color[1], $color[2]);
@@ -254,8 +260,14 @@ final class TColorHandler {
     }
 
 
-
-
+    /**
+     * Summary of getColor
+     * @param mixed $index
+     * @param mixed $shadeFactor
+     * @return float[]
+     * 
+     * @version 24.0.0
+     */
     public function getColor($index, $shadeFactor = 1)
     {
         $baseColor = $this->baseColors[$index % count($this->baseColors)];
@@ -281,6 +293,8 @@ final class TColorHandler {
      *                     <Greek> Η τιμή της φωτεινότητας.
      * @return array <English> Array containing RGB values.
      *               <Greek> Πίνακας που περιέχει τις τιμές RGB.
+     * 
+     * @version 24.0.0
      */
     public static function hsvToRgb($hue, $saturation, $value) {
         $c = $value * $saturation;
@@ -314,6 +328,8 @@ final class TColorHandler {
      *                     <Greek> Το βασικό χρώμα σε μορφή RGB.
      * @return array <English> The inverted color in RGB format.
      *               <Greek> Το αντεστραμμένο χρώμα σε μορφή RGB.
+     * 
+     * @version 24.0.0
      */
     public static function invertColor($color) {
         return [
@@ -339,6 +355,8 @@ final class TColorHandler {
      *                     <Greek> Ο λόγος ανάμειξης των δύο χρωμάτων.
      * @return array <English> The mixed color in RGB format.
      *               <Greek> Το αναμεμιγμένο χρώμα σε μορφή RGB.
+     * 
+     * @version 24.0.0
      */
     public static function mixColors($color1, $color2, $ratio) {
         return [
@@ -361,6 +379,8 @@ final class TColorHandler {
      *                   <Greek> Ο αριθμός των αποχρώσεων που θα δημιουργηθούν.
      * @return array <English> An array of shades in RGB format.
      *               <Greek> Ένας πίνακας αποχρώσεων σε μορφή RGB.
+     * 
+     * @version 24.0.0
      */
     public static function monochromeShades($color, $steps) {
         $shades = [];
@@ -387,6 +407,8 @@ final class TColorHandler {
      *               <Greek> Η τιμή του μπλε (0-255).
      * @return array <English> Array containing HSV values.
      *               <Greek> Πίνακας που περιέχει τις τιμές HSV.
+     * 
+     * @version 24.0.0
      */
     public static function rgbToHsv($r, $g, $b) {
         $r /= 255;
@@ -423,6 +445,8 @@ final class TColorHandler {
      *
      * @return array <English> Array containing RGB values.
      *               <Greek> Πίνακας που περιέχει τις τιμές RGB.
+     * 
+     * @version 24.0.0
      */
     public static function randomColor() {
         $r = rand(0, 255);
@@ -444,6 +468,8 @@ final class TColorHandler {
      *                      <Greek> Ο παράγοντας για να ανοίξει ή να σκουρύνει το χρώμα.
      * @return array <English> The shaded color in RGB format.
      *               <Greek> Η απόχρωση του χρώματος σε μορφή RGB.
+     * 
+     * @version 24.0.0
      */
     public static function shadeColor($color, $factor) {
         return [
@@ -464,6 +490,8 @@ final class TColorHandler {
      *                     <Greek> Το χρώμα σε μορφή RGB.
      * @return bool <English> True if valid, otherwise false.
      *              <Greek> True αν είναι έγκυρο, αλλιώς false.
+     * 
+     * @version 24.0.0
      */
     public static function validateColor($color) {
         return (

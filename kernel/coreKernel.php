@@ -20,12 +20,12 @@
  * @subpackage         	: Main Core Handles
  * @source             	: afw/kernel/coreKernel.php
  * @fileNo             	: 
- * @version            	: 24.0.5
- * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-10 07:00:00 UTC+3 
+ * @version            	: 24.0.6
+ * @created            	: 2024-07-01 20:00:00 UTC+3
+ * @updated            	: 2024-12-15 07:00:00 UTC+3
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
- * @license 			: AGL-F
+ * @license 			: AGL-F (Free Edition)
  * 
  * @since PHP 8.2.0
  */
@@ -34,23 +34,30 @@ namespace ASCOOS\FRAMEWORK\Kernel\Core;
 defined ("ALEXSOFT_RUN_CMS") or die("Prohibition of Access.");
 defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
 
-use stdClass;
-use Stringable;
-use Error;
-use ReflectionClass;
-use ReflectionProperty;
-use Throwable;
+use stdClass, Stringable, Error, ReflectionClass, ReflectionProperty, Throwable;
 
 use ASCOOS\FRAMEWORK\Kernel\Implementation\Methods\{
     func_free, 
     func_FreeProperties, 
     func_toString
 };
-use Exception;
+
 
 /**
+ * Δημόσιος πίνακας που περιέχει τα λάθη. 
+ * Χρησιμοποιείται για να δημιουργήσει ιδιωτικά αρχεία αναφορών μορφοποιημένα κατάλληλα.
+ * 
+ * @license AGL (Commercial)
+ */
+$_ERRORS = [];
+
+
+/******************************************************************************
+ * @startcode TError
+ *****************************************************************************/
+/**
  * @class TError
- * @extends parent<Error>
+ * @extends Error
  * 
  * @summary     Implements the error management class.
  * 
@@ -86,6 +93,8 @@ class TError extends Error
      * 
      * @param object $object    Object of class for free
      * @return bool
+     * 
+     * @version 24.0.0
      */
     USE func_free; 
 
@@ -94,6 +103,8 @@ class TError extends Error
      * 
      * @param object $object    Object of class for free
      * @return bool
+     * 
+     * @version 24.0.0
      */
     USE func_FreeProperties;
 
@@ -102,13 +113,33 @@ class TError extends Error
      * Returns a string containing the error.
      * 
      * @return string
+     * 
+     * @version 24.0.0
      */
     public function __toString():string 
     {
         return 'Error: File=[' . $this->getFile() .'] --> Line=['. $this->getLine() .'] --> Code=['.$this->getCode().'] --> Message=['.$this->getMessage().']';
     }    
 
+
+    /**
+     * 
+     * 
+     * 
+     * @return array
+     * 
+     * @license AGL (Commercial License)
+     * @version 24.0.0
+     */
+    public function getError(): array|false
+    {
+        return false;
+    }
+
 }   
+/******************************************************************************
+ * @endcode TError
+ *****************************************************************************/
 
 
 
@@ -127,6 +158,8 @@ interface TCoreHandler extends Stringable {}
  *****************************************************************************/
 
 
+
+
 /******************************************************************************
  * @startcode TObject
  *****************************************************************************/
@@ -137,22 +170,27 @@ interface TCoreHandler extends Stringable {}
  * 
  * @summary The base class on which all classes in the framework are based.
  * 
+ * [ PROPERTIES ]
+ * @property array $properties [protected]          Class Properties
+ * 
  * [ METHODS ]
- * @method void __construct(array $properties=[])   Initialize the class. It must be called by the offspring if the classes are initialized.
- * @method string __toString()                      Returns a string containing the name of this class.
- * @method bool Free(object $object)                Frees the memory of the Object or its clone.
- * @method bool FreeProperties(object $object)      Delete and Frees up memory for all class properties.
- * @method bool getClassDeprecated()                Returns true if class is deprecated, otherwise false.
- * @method int getClassVersion()                    We get the version of the class.
- * @method array getProperties()                    Returns the table of class properties.
- * @method mixed getProperty(string $property)      Returns the content of the requested property.
- * @method ?array getPublicProperties()             Returns an array of the public properties of the class.
- * @method int|false getVersion(string $property)   Get the version as an integer.       
- * @method string|false getVersionStr(string $property)     Get the version as a formatted string.
+ * @method void __construct(array $properties=[])                          Initialize the class. It must be called by the offspring if the classes are initialized.
+ * @method string __toString()                                             Returns a string containing the name of this class.
+ * @method bool Free(object $object)                                       Frees the memory of the Object or its clone.
+ * @method bool FreeProperties(object $object)                             Delete and Frees up memory for all class properties.
+ * @method bool getClassDeprecated()                                       Returns true if class is deprecated, otherwise false.
+ * @method int getClassVersion()                                           We get the version of the class.
+ * @method mixed getDeepProperty(array $keys, ?array $array = null)        Gets a property at any depth within the properties array.
+ * @method array getProperties()                                           Returns the table of class properties.
+ * @method mixed getProperty(string $property)                             Returns the content of the requested property.
+ * @method ?array getPublicProperties()                                    Returns an array of the public properties of the class.
+ * @method int|false getVersion(string $property)                          Get the version as an integer.       
+ * @method string|false getVersionStr(string $property)                    Get the version as a formatted string.
  * @method bool isExecutable(int $currentVersion, int $currentPHPVersion)  Checks whether the current version of the class is executable according to the minimum and maximum versions you specify.
- * @method void setProjectVersion(int|string $version = -1)     Sets the project version.
- * @method void setProperties(array $properties, string|int|null $property_key=null)    Set the properties of the class.
- * @method void setProperty(string|int $property, mixed $value, string|int|null $property_key=null)   Set a single property of the class.
+ * @method void setDeepProperty(array $keys, mixed $value, ?array &$array = null)                       Sets a property at any depth within the properties array.
+ * @method void setProjectVersion(int|string $version = -1)                                             Sets the project version.
+ * @method bool setProperties(array $properties, string|int|null $property_key = null)                  Recursively sets properties of the class, merging sub-arrays without overwriting other data.
+ * @method bool setProperty(string|int $property, mixed $value, string|int|null $property_key = null)   Set a single property of the class.
  */
 #[\AllowDynamicProperties]
 class TObject extends stdClass implements TCoreHandler
@@ -196,6 +234,8 @@ class TObject extends stdClass implements TCoreHandler
      * 
      * @param array $properties   <English>  An associative array of properties to initialize the class with.
      *                            <Greek>    Ένας συσχετιστικός πίνακας ιδιοτήτων για την αρχικοποίηση της κλάσης.
+     * 
+     * @version 24.0.0
      */    
     public function __construct(array $properties = []) {
         /*
@@ -229,6 +269,8 @@ class TObject extends stdClass implements TCoreHandler
      * @return string 
      * @desc <English>  Returns a string containing the name of this class.
      * @desc <Greek>    Επιστρέφει μια συμβολοσειρά που περιέχει το όνομα αυτής της κλάσης.
+     * 
+     * @version 24.0.0
      */
     USE func_toString;
        
@@ -237,6 +279,8 @@ class TObject extends stdClass implements TCoreHandler
     /**
      * Returns true if class is deprecated, otherwise false
      * @return bool
+     * 
+     * @version 24.0.0
      */
     final public function getClassDeprecated(): bool
 	{
@@ -248,6 +292,8 @@ class TObject extends stdClass implements TCoreHandler
      * We get the version of the class
      * 
      * @return int
+     * 
+     * @version 24.0.0
      */
 	final public function getClassVersion(): int
 	{
@@ -335,19 +381,57 @@ class TObject extends stdClass implements TCoreHandler
         */
         return $cache;
     }
-      
-
 
     
     /**
+     * Gets a property at any depth within the properties array.
+     * 
+     * @desc <English>  Gets a property at any depth within the properties array.
+     * @desc <Greek>    Ανακτά μία ιδιότητα σε οποιοδήποτε βάθος εντός του πίνακα ιδιοτήτων.
+     * 
+     * @param array $keys     <English>  An array representing the path to the property.
+     *                        <Greek>    Ένας πίνακας που αντιπροσωπεύει τη διαδρομή προς την ιδιότητα.
+     * @param array|null $array   <English>  The array to get the property from (used internally for recursion).
+     *                               <Greek>    Ο πίνακας από τον οποίο θα ανακτηθεί η ιδιότητα (χρησιμοποιείται εσωτερικά για αναδρομή).
+     * @return mixed
+     * 
+     * @version 24.0.6
+     */
+    public function getDeepProperty(array $keys, ?array $array = null): mixed
+    {
+        if ($array === null) {
+            $array = $this->properties;
+        }
+
+        $key = array_shift($keys);
+
+        if (empty($keys)) {
+            return $array[$key] ?? null;
+        }
+
+        if (!isset($array[$key]) || !is_array($array[$key])) {
+            return null;
+        }
+
+        return $this->getDeepProperty($keys, $array[$key]);
+    }
+
+
+    /**
      * Returns the table of class properties.
-     * @return array
+     * 
+     * @desc <English>  Returns the table of class properties.
+     * @desc <Greek>    Επιστρέφει τον πίνακα ιδιοτήτων της κλάσης.
+     * 
+     * @return array <English>  The properties array.
+     *               <Greek>    Ο πίνακας ιδιοτήτων.
+     * 
+     * @version 24.0.0
      */
     public function getProperties() : array 
 	{
-		return (array) $this->properties;
+		return $this->properties;
 	}
-
 
 
     /**
@@ -358,6 +442,7 @@ class TObject extends stdClass implements TCoreHandler
      *                              <Greek> Το όνομα της ιδιότητας που ζητάμε να πάρουμε τα δεδομένα της
      * @return mixed            <English> Returns the content of the requested property
      *                              <Greek> Επιστρέφει το περιεχόμενο της ιδιότητας που ζητήθηκε
+     * @version 24.0.0
      */
     public function getProperty(string $property): mixed  
 	{
@@ -375,6 +460,8 @@ class TObject extends stdClass implements TCoreHandler
      *                            <Greek>    Το όνομα της ιδιότητας της οποίας η έκδοση θα ληφθεί.
      * @return int|false <English>  Returns the version as an integer if it is set and valid, otherwise false.
      *                   <Greek>    Επιστρέφει την έκδοση ως ακέραιο αν είναι ορισμένη και έγκυρη, αλλιώς false.
+     * 
+     * @version 24.0.0
      */    
     public function getVersion(string $property): int|false {
         /*
@@ -403,6 +490,8 @@ class TObject extends stdClass implements TCoreHandler
      *                            <Greek>    Το όνομα της ιδιότητας της οποίας η έκδοση θα ληφθεί.
      * @return string|false <English>  Returns the formatted version string if the version is set and valid, otherwise false.
      *                       <Greek>    Επιστρέφει τη μορφοποιημένη συμβολοσειρά της έκδοσης αν είναι ορισμένη και έγκυρη, αλλιώς false.
+     * 
+     * @version 24.0.0
      */
     public function getVersionStr(string $property): string|false {
         /*
@@ -438,8 +527,7 @@ class TObject extends stdClass implements TCoreHandler
      * 
      * @access public
      * @final
-     * 
-     * @since 24.0.0
+     * @version 24.0.0
      */
     public function isExecutable(int $currentVersion, int $currentPHPVersion): bool {
         $minVersion = $this->properties['MinAscoosVersion'];
@@ -516,6 +604,63 @@ class TObject extends stdClass implements TCoreHandler
 
 
     /**
+     * Validation if property is string or integer.
+     * 
+     * @desc <English> Validation if property is string or integer.
+     * @desc <Greek>   Ορίζει την έκδοση του project. Μετατρέπει τις συμβολοσειρές εκδόσεων σε ακέραιους αριθμούς.
+     * 
+     * @param mixed $property   <English>  The property name to set.
+     *                          <Greek>    Το όνομα της ιδιότητας που θα οριστεί.
+     * 
+     * @access public
+     * @final
+     * @version 24.0.0
+     */
+    final public function propertyValidation($property): bool 
+    {
+        if (is_string($property) || is_int($property)) 
+            return true;
+        else 
+            return false;
+    }
+
+
+    /**
+     * Sets a property at any depth within the properties array.
+     * 
+     * @desc <English>  Sets a property at any depth within the properties array.
+     * @desc <Greek>    Ορίζει μία ιδιότητα σε οποιοδήποτε βάθος εντός του πίνακα ιδιοτήτων.
+     * 
+     * @param array $keys     <English>  An array representing the path to the property.
+     *                        <Greek>    Ένας πίνακας που αντιπροσωπεύει τη διαδρομή προς την ιδιότητα.
+     * @param mixed $value    <English>  The value to set for the property.
+     *                        <Greek>    Η τιμή που θα οριστεί για την ιδιότητα.
+     * @param array|null $array   <English>  The array to set the property in (used internally for recursion).
+     *                               <Greek>    Ο πίνακας στον οποίο θα οριστεί η ιδιότητα (χρησιμοποιείται εσωτερικά για αναδρομή).
+     * @return void
+     * 
+     * @version 24.0.6
+     */
+    public function setDeepProperty(array $keys, mixed $value, ?array &$array = null): void 
+    {
+        if ($array === null) {
+            $array = &$this->properties;
+        }
+
+        $key = array_shift($keys);
+
+        if (empty($keys)) {
+            $array[$key] = $value;
+        } else {
+            if (!isset($array[$key]) || !is_array($array[$key])) {
+                $array[$key] = [];
+            }
+            $this->setDeepProperty($keys, $value, $array[$key]);
+        }
+    }    
+
+
+    /**
      * Sets the project version.
      * 
      * @param int|string $version The version to set. If string, it should be in the format 'x.y.z'.
@@ -525,6 +670,7 @@ class TObject extends stdClass implements TCoreHandler
      * 
      * @access public
      * @final
+     * @version 24.0.0
      */
     final public function setProjectVersion(int|string $version = -1) {
         if (is_string($version)) {
@@ -534,36 +680,34 @@ class TObject extends stdClass implements TCoreHandler
     }
 
 
-
     /**
-     * Set the properties of the class.
+     * Recursively sets properties of the class, merging sub-arrays without overwriting other data.
      * 
-     * @desc <English>  Sets the properties of the class. If the properties array is not empty, it overrides the default properties with the provided values.
-     * @desc <Greek>    Ορίζει τις ιδιότητες της κλάσης. Εάν ο πίνακας ιδιοτήτων δεν είναι κενός, αντικαθιστά τις προεπιλεγμένες ιδιότητες με τις παρεχόμενες τιμές.
+     * @desc <English>  Recursively sets properties of the class, merging sub-arrays without overwriting other data.
+     * @desc <Greek>    Αναδρομικά ορίζει τις ιδιότητες της κλάσης, συγχωνεύοντας τους υποπίνακες χωρίς να αντικαθιστά τα υπόλοιπα δεδομένα.
      * 
      * @param array $properties   <English>  An associative array of properties to set.
      *                            <Greek>    Ένας συσχετιστικός πίνακας ιδιοτήτων που θα οριστούν.
+     * @param string|int|null $property_key <English>  The key of the property to set.
+     *                                      <Greek>    Το κλειδί της ιδιότητας που θα οριστεί.
+     * @return bool <English>  Returns true if properties were set, false otherwise.
+     *               <Greek>   Επιστρέφει true αν οι ιδιότητες ορίστηκαν, αλλιώς επιστρέφει false.
+     * 
+     * @version 24.0.6
      */    
-    public function setProperties(array $properties, string|int|null $property_key=null) 
+    public function setProperties(array $properties, string|int|null $property_key = null): bool 
     {
-        /*
-        <English>
-            If the properties array is not empty, override the default properties with the provided values.
-        </English>
-        <Greek>
-            Εάν ο πίνακας ιδιοτήτων δεν είναι κενός, αντικατάσταση των προεπιλεγμένων ιδιοτήτων με τις παρεχόμενες τιμές.
-        </Greek>
-        */
-        if (!empty($properties)) {
-            foreach ($properties as $key => $val) {
-                if (is_null($property_key)) 
-                {
-                    $this->properties[$key] = $val;
-                } else {
-                    $this->properties[$property_key][$key] = $val;
-                }
-            }
+        if (empty($properties)) {
+            return false;
         }
+
+        if (!is_null($property_key) && array_key_exists($property_key, $this->properties)) {
+            $this->properties[$property_key] = $this->mergeRecursive($this->properties[$property_key], $properties);
+        } else {
+            $this->properties = $this->mergeRecursive($this->properties, $properties);
+        }
+
+        return true;
     }
 
 
@@ -573,37 +717,28 @@ class TObject extends stdClass implements TCoreHandler
      * @desc <English>  Sets a single property of the class.
      * @desc <Greek>    Ορίζει μία ιδιότητα της κλάσης.
      * 
-     * @param string $property   <English>  The property name to set.
-     *                           <Greek>    Το όνομα της ιδιότητας που θα οριστεί.
+     * @param string|int $property   <English>  The property name to set.
+     *                               <Greek>    Το όνομα της ιδιότητας που θα οριστεί.
      * @param mixed $value       <English>  The value to set for the property.
      *                           <Greek>    Η τιμή που θα οριστεί για την ιδιότητα.
+     * @param string|int|null $property_key   <English>  The name of the property in which it will be inserted.
+     *                                        <Greek>    Το όνομα της ιδιότητας στην οποία θα εισαχθεί.
+     * @return bool <English>  Returns true if the property was set, false otherwise.
+     *               <Greek>   Επιστρέφει true αν η ιδιότητα ορίστηκε, αλλιώς επιστρέφει false.
+     * 
+     * @version 24.0.6
      */    
-    public function setProperty(string|int $property, mixed $value, string|int|null $property_key=null): bool 
+    public function setProperty(string|int $property, mixed $value, string|int|null $property_key = null): bool 
     {
-        /*
-        <English>
-            Check if the property name is a string and set the property value.
-        </English>
-        <Greek>
-            Ελέγχει αν το όνομα της ιδιότητας είναι συμβολοσειρά και ορίζει την τιμή της ιδιότητας.
-        </Greek>
-        */
         if (is_null($property_key)) {
-            if (is_string($property) || is_int($property)) {
-                $this->properties[$property] = $value;
-                return true;
-            } else {
-                throw new TError('The property must have an integer or string as its key.');
-            }
-        } else {
-            if (is_string($property_key) || is_int($property_key)) {
-                $this->properties[$property_key][$property] = $value;
-                return true;
-            } else {
-                throw new TError('The property must have an integer or string as its key.');
-            }            
+            $this->properties[$property] = $value;
+            return true;
+        } elseif (is_string($property_key) || is_int($property_key)) {
+            $this->properties[$property_key][$property] = $value;
+            return true;
         }
 
+        return false;
     }
 
 
@@ -614,11 +749,12 @@ class TObject extends stdClass implements TCoreHandler
      * 
      * @param object $object    Object of class for free
      * @return bool
+     * 
+     * @version 24.0.0
      */
     USE func_free; 
 
     
-
     /**
      * @method final public function FreeProperties(object $object): bool
      * 
@@ -626,16 +762,49 @@ class TObject extends stdClass implements TCoreHandler
      * 
      * @param object $object    Object of class for properties free
      * @return bool
+     * 
+     * @version 24.0.0
      */
     USE func_FreeProperties;
 
    
 
     /**
-     * ............... Others TObject methods  .................
+     * ............... Private TObject methods  .................
+     */ 
+
+    /**
+     * Helper function to recursively merge two arrays.
+     * 
+     * @param array $array1 <English>  The base array.
+     *                      <Greek>    Ο βασικός πίνακας.
+     * @param array $array2 <English>  The array to merge into the base array.
+     *                      <Greek>    Ο πίνακας που θα συγχωνευτεί στον βασικό πίνακα.
+     * @return array <English>  The merged array.
+     *               <Greek>    Ο συγχωνευμένος πίνακας.
+     * 
+     * @version 24.0.6
+     */
+    private function mergeRecursive(array $array1, array $array2): array
+    {
+        foreach ($array2 as $key => $value) {
+            if (is_array($value) && isset($array1[$key]) && is_array($array1[$key])) {
+                $array1[$key] = $this->mergeRecursive($array1[$key], $value);
+            } else {
+                $array1[$key] = $value;
+            }
+        }
+        return $array1;
+    }    
+   
+    /**
+     * ............... End Private TObject methods  .................
      */ 
 
 
+    // __________________________________________________________________________________
+    // ............... Others methods and properties of TObject Class  .................
+    // __________________________________________________________________________________
 
 }
 /******************************************************************************
@@ -643,7 +812,8 @@ class TObject extends stdClass implements TCoreHandler
  *****************************************************************************/
 
 
-/**
- * ............... Others coreKernel.php Class and datas  .................
- */ 
+
+// ________________________________________________________________________
+// ............... Others coreKernel.php Class and datas  .................
+// ________________________________________________________________________
 ?>
