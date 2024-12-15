@@ -19,6 +19,16 @@ try {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
     $e->Free($e);
 }
+
+
+try {
+    throw new TError("Some error message");
+} catch(TError $e) {
+    echo $e->getError(AFW_ERROR_ARGUMENT_INVALID_TYPE); // Νεά μέθοδος εμφάνισης λάθους. Περνάει όλα τα λάθη στον δημόσιο πίνακα $_ERRORS
+} finally {
+    if (is_object($e)) $e->Free($e);
+}
+
 ```
 
 ## `Methods`
