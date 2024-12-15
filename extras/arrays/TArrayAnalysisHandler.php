@@ -20,9 +20,9 @@
  * @subpackage         	: Handles advanced data analysis for arrays.
  * @source             	: afw/extras/arrays/TArrayAnalysisHandler.php
  * @file             	: 
- * @version            	: 24.0.5
+ * @version            	: 24.0.6
  * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-10 07:00:00 UTC+3 
+ * @updated            	: 2024-12-15 07:00:00 UTC+3 
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -82,73 +82,64 @@ use Exception;
  * @property array $array                                                  Array to store data.
  *  
  * [ INHERITANCE METHODS ]
- * @method bool empty(array $array)                                        Checks if an array is empty.
- * @method string toJSON()                                                 Converts array to JSON string.
- * @method void fromJSON(string $json)                                     Converts JSON string to array.
- * @method string toXML()                                                  Converts array to XML string.
- * @method void fromXML(string $xml)                                       Converts XML string to array.
- * @method object toObject()                                               Converts array to an object.
- * @method void fromObject(object $object)                                 Converts an object to array.
- * @method void toINI(string $filePath)                                    Converts array to INI format and saves to file.
- * @method void fromINI(string $filePath)                                  Converts INI file to array.
- * @method string toRSS()                                                  Converts array to RSS feed format.
- * @method void fromRSS(string $rss)                                       Converts RSS feed format to array.
- * @method void toPHPArrayFile(string $filePath)                           Creates a PHP file that returns the array.
- * @method void fromPHPArrayFile(string $filePath)                         Reads a PHP file that returns an array and assigns it to the internal array.
- * @method void toPHPVariablesFile(string $filePath)                       Creates a PHP file that defines variables for the array elements.
- * @method void fromPHPVariablesFile(string $filePath)                     Reads a PHP file that defines variables and assigns them to the internal array.
- * @method void toCSV(string $filePath)                                    Converts array to CSV format and saves to file.
- * @method void fromCSV(string $filePath)                                  Converts CSV format to array.
- * @method void toYAML(string $filePath)                                   Converts array to YAML format and saves to file.
- * @method void fromYAML(string $filePath)                                 Converts YAML format to array.
- * @method void toBSON(string $filePath)                                   Converts array to a binary-like format and saves to file.
- * @method void fromBSON(string $filePath)                                 Converts binary-like format to array.
- * @method void toTOML(string $filePath)                                   Converts array to TOML format and saves to file.
- * @method void fromTOML(string $filePath)                                 Converts TOML format to array.
- * @method void toPlainText(string $filePath)                              Converts array to plain text format and saves to file.
- * @method void fromPlainText(string $filePath)                            Converts plain text format to array.
- * @method array filter(callable $callback)                                Filters the array based on a callback function.
- * @method void sortAsc()                                                  Sorts the array in ascending order.
- * @method void sortDesc()                                                 Sorts the array in descending order.
- * @method void reverse()                                                  Reverses the array.
- * @method bool find(mixed $element)                                       Finds an element in the array.
- * @method array map(callable $callback)                                   Applies a callback function to each element in the array.
- * @method mixed reduce(callable $callback, mixed $initial)                Reduces the array to a single value using a callback function.
- * @method array unique()                                                  Removes duplicate values from the array.
- * @method array keys()                                                    Returns the keys of the array.
- * @method array values()                                                  Returns the values of the array.
- * @method array slice(int $offset, int $length = null)                    Returns a slice of the array.
- * @method array chunk(int $size)                                          Splits the array into chunks.
- * @method array combine(array $keys)                                      Combines two arrays into an associative array.
- * @method array diff(array $array)                                        Returns the difference between two arrays.
- * @method array intersect(array $array)                                   Returns the intersection of two arrays.
- * @method array flip()                                                    Flips the array keys and values.
- * @method bool walkRecursive(callable $callback)                          Applies a callback function to each element in the array recursively.
- * @method bool validateNotEmpty()                                         Validates the array for empty elements.
- * @method bool validateDataType(string $type)                             Validates the array for specific data types.
- * @method bool validateUnique()                                           Validates the array for unique elements.
- * @method bool validateRange(float $min, float $max)                      Validates the array for elements within a specific range.
- * @method bool validatePattern(string $pattern)                           Validates the array for elements matching a specific pattern.
+ * @method array chunk(int $length, bool $preserve_keys = false)           Splits the internal array into chunks.
  * @method void cleanEmptyElements()                                       Cleans the array by removing empty elements.
+ * @method void cleanHTMLTags()                                            Cleans the array by removing HTML tags from elements.
  * @method void cleanInvalidDataTypes(string $type)                        Cleans the array by removing elements of invalid data types.
  * @method void cleanSpecialCharacters(string $pattern = '/[^A-Za-z0-9]/') Cleans the array by removing special characters from elements.
- * @method void cleanWhitespace()                                          Cleans the array by trimming whitespace from elements.
- * @method void cleanHTMLTags()                                            Cleans the array by removing HTML tags from elements.
  * @method void cleanValidURLs()                                           Validates and cleans the array for valid URLs.
- * @method string __toString()                                              Returns a string containing the name of this class.
- * @method bool getClassDeprecated()                                        Returns true if class is deprecated, otherwise false.
- * @method int getClassVersion()                                            We get the version of the class.
- * @method array getProperties()                                            Returns the table of class properties.
- * @method mixed getProperty(string $property)                              Returns the content of the requested property.
- * @method ?array getPublicProperties()                                     Returns an array of the public properties of the class.
- * @method int|false getVersion(string $property)                           Get the version as an integer.
- * @method string|false getVersionStr(string $property)                     Get the version as a formatted string.
- * @method bool isExecutable(int $currentVersion, int $currentPHPVersion)   Checks whether the current version of the class is executable according to the minimum and maximum versions you specify.
- * @method void setProjectVersion(int|string $version = -1)                 Sets the project version.
- * @method void setProperties(array $properties)                            Set the properties of the class.
- * @method void setProperty(string $property, mixed $value)                 Set a single property of the class.
- * @method bool Free(object $object)                                        Frees the memory of the Object or its clone.
- * @method bool FreeProperties(object $object)                              Delete and Frees up memory for all class properties.
+ * @method void cleanWhitespace()                                          Cleans the array by trimming whitespace from elements.
+ * @method array combine(array $keys)                                      Combines two arrays into an associative array.
+ * @method array diff(array $array)                                        Returns the difference between two arrays.
+ * @method bool empty(?array $array=null)                                  Checks if an array is empty.
+ * @method array filter(callable $callback)                                Filters the array based on a callback function.
+ * @method bool find(mixed $element)                                       Finds an element in the array.
+ * @method array flatten(?array $array=null)                               Flatten function for multidimensional arrays.
+ * @method array flip()                                                    Flips the array keys and values.
+ * @method void fromBSON(string $filePath)                                 Converts binary-like format to array.
+ * @method void fromCSV(string $filePath)                                  Converts CSV format to array.
+ * @method void fromINI(string $filePath)                                  Converts INI file to array.
+ * @method void fromJSON(string $json)                                     Converts JSON string to array.
+ * @method void fromObject(object $object)                                 Converts an object to array.
+ * @method void fromPHPArrayFile(string $filePath)                         Reads a PHP file that returns an array and assigns it to the internal array.
+ * @method void fromPHPVariablesFile(string $filePath)                     Reads a PHP file that defines variables and assigns them to the internal array.
+ * @method void fromPlainText(string $filePath)                            Converts plain text format to array.
+ * @method void fromRSS(string $rss)                                       Converts RSS feed format to array.
+ * @method void fromTOML(string $filePath)                                 Converts TOML format to array.
+ * @method void fromXML(string $xml)                                       Converts XML string to array.
+ * @method void fromYAML(string $filePath)                                 Converts YAML format to array.
+ * @method array intersect(array $array)                                   Returns the intersection of two arrays.
+ * @method array keys()                                                    Returns the keys of the array.
+ * @method array map(callable $callback)                                   Applies a callback function to each element in the array.
+ * @method void merge(array ...$arrays)                                    Merges the internal array with one or more arrays.
+ * @method void merge_recursive(array ...$arrays)                          Recursively merges the internal array with one or more arrays.
+ * @method mixed reduce(callable $callback, mixed $initial)                Reduces the array to a single value using a callback function.
+ * @method void replace(array ...$replacements)                            Replaces the internal array with one or more arrays.
+ * @method void replace_recursive(array ...$replacements)                  Recursively replaces the internal array with one or more arrays.
+ * @method void reverse()                                                  Reverses the array.
+ * @method array slice(int $offset, ?int $length = null, bool $preserve_keys = false)   Returns a slice of the array.
+ * @method void sortAsc()                                                  Sorts the array in ascending order.
+ * @method void sortDesc()                                                 Sorts the array in descending order.
+ * @method void toBSON(string $filePath)                                   Converts array to a binary-like format and saves to file.
+ * @method void toCSV(string $filePath)                                    Converts array to CSV format and saves to file.
+ * @method void toINI(string $filePath)                                    Converts array to INI format and saves to file.
+ * @method string toJSON()                                                 Converts array to JSON string.
+ * @method object toObject()                                               Converts array to an object.
+ * @method void toPHPArrayFile(string $filePath)                           Creates a PHP file that returns the array.
+ * @method void toPHPVariablesFile(string $filePath)                       Creates a PHP file that defines variables for the array elements.
+ * @method void toPlainText(string $filePath)                              Converts array to plain text format and saves to file.
+ * @method string toRSS()                                                  Converts array to RSS feed format.
+ * @method void toTOML(string $filePath)                                   Converts array to TOML format and saves to file.
+ * @method string toXML()                                                  Converts array to XML string.
+ * @method void toYAML(string $filePath)                                   Converts array to YAML format and saves to file.
+ * @method array unique()                                                  Removes duplicate values from the array.
+ * @method bool validateDataType(string $type)                             Validates the array for specific data types.
+ * @method bool validateNotEmpty()                                         Validates the array for empty elements.
+ * @method bool validatePattern(string $pattern)                           Validates the array for elements matching a specific pattern.
+ * @method bool validateRange(float $min, float $max)                      Validates the array for elements within a specific range.
+ * @method bool validateUnique()                                           Validates the array for unique elements.
+ * @method array values()                                                  Returns the values of the array.
+ * @method bool walkRecursive(callable $callback)                          Applies a callback function to each element in the array recursively.
  */
 class TArrayAnalysisHandler extends TArrayHandler
 {
