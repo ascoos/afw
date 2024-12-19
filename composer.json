@@ -1,7 +1,7 @@
 {
     "name": "ascoos/afw",
     "description": "ASCOOS FRAMEWORK 24",
-    "version": "24.0.6",
+    "version": "24.0.7",
     "license":"AGL-F (Ascoos General License - Free)",
     "homepage": "https://apps.ascoos.com/afw",
     "authors": [
@@ -20,7 +20,7 @@
             "type": "package",
             "package": {
                 "name": "ascoos/afw",
-                "version": "24.0.6",
+                "version": "24.0.7",
                 "type": "framework",
                 "distributors": [
                     {
@@ -29,7 +29,7 @@
                     },
                     {
                         "type": "zip",
-                        "url": "https://github.com/ascoos/afw/releases/download/24.0.6/afw-24.0.6.zip"
+                        "url": "https://github.com/ascoos/afw/releases/download/24.0.7/afw-24.0.7.zip"
                     },
                     {
                         "type": "zip",
