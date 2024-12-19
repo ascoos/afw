@@ -20,9 +20,9 @@
  * @subpackage         	: Main Core Handles
  * @source             	: afw/kernel/coreKernel.php
  * @fileNo             	: 
- * @version            	: 24.0.6
+ * @version            	: 24.0.7
  * @created            	: 2024-07-01 20:00:00 UTC+3
- * @updated            	: 2024-12-15 07:00:00 UTC+3
+ * @updated            	: 2024-12-18 07:00:00 UTC+3
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F (Free Edition)
@@ -61,7 +61,7 @@ $_ERRORS = [];
  * 
  * @summary     Implements the error management class.
  * 
- * @method public __construct(string $message = "", int $code = 0, ?Throwable $previous = null)  Initialize the class.
+ * @method public __construct(string $message = "", int $code = 0, ?Throwable $previous = null, bool $free_on_return = true)  Initialize the class.
  * @method public __toString(): string                              Returns a string containing the error.
  * @method public Free(object $object): bool;                       Frees the memory of the Object or its clone 
  * @method public function FreeProperties(object $object): bool;    Delete and Frees up memory for all class properties.
@@ -83,7 +83,7 @@ $_ERRORS = [];
  */
 class TError extends Error 
 {
-    public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null) {
+    public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null, bool $free_on_return = true) {
         parent::__construct($message, $code, $previous);
     }
 
@@ -118,7 +118,39 @@ class TError extends Error
      */
     public function __toString():string 
     {
-        return 'Error: File=[' . $this->getFile() .'] --> Line=['. $this->getLine() .'] --> Code=['.$this->getCode().'] --> Message=['.$this->getMessage().']';
+        $trace = '<table style="border: 2px solid #373737; border-radius: 5px; margin:0; padding:0;">'.
+        '<thead style="ymargin:0; padding:0;">'.
+        '<tr style="background-color:#8a030e; color:#ffffff; font-weight: bold; font-size: 1.2em;">'.
+            '<th colspan="1" style="padding:4px;">'.$this->getCode().'</th>'.
+            '<th colspan="3" style="padding:4px;">'.$this->getMessage().'</th>'.
+        '</tr>'.
+        '<tr>'.
+            '<th colspan="4" style="padding:2px; background-color:#ffa755; color:#000; font-weight: bold; font-size: 1.1em;">File: '. $this->getFile().' [Line: '.$this->getLine().']</th>'.
+        '</tr>'.  
+        '<tr>'.
+            '<th colspan="4" style="padding:2px; background-color:#dcd8d8; color:#373737; font-weight: bold; font-size: 1.1em;">Call Stack</th>'.
+        '</tr>'.        
+        '<tr>'.
+            '<th style="padding:5px; border: 1px solid black; text-align:center;">#</th>'.
+            '<th style="padding:5px; border: 1px solid black;text-align:left;">Function</th>'.
+            '<th style="padding:5px; border: 1px solid black;text-align:left;">File</th>'.
+            '<th style="padding:5px; border: 1px solid black;text-align:left;">Line</th>'.
+        '</tr>'.
+        '</thead><tbody>';
+
+        $traces = $this->getTrace();
+
+        foreach ($traces as $key => $value) 
+        {
+            $trace .= '<tr>'.
+            '<td style="padding:5px; border: 1px solid black; width: 20px; text-align:center;">'.$key.'</td>'.
+            '<td style="padding:5px; border: 1px solid black;text-align:left;">'.$value['function'].'</td>'.
+            '<td style="padding:5px; border: 1px solid black;text-align:left;">'.$value['file'].'</td>'.
+            '<td style="padding:5px; border: 1px solid black;text-align:left;">'.$value['line'].'</td>'.
+          '</tr>';
+        }
+        $trace .= '</tbody></table>';
+        return $trace;
     }    
 
 
@@ -178,9 +210,12 @@ interface TCoreHandler extends Stringable {}
  * @method string __toString()                                             Returns a string containing the name of this class.
  * @method bool Free(object $object)                                       Frees the memory of the Object or its clone.
  * @method bool FreeProperties(object $object)                             Delete and Frees up memory for all class properties.
+ * @method array getChildren(object|string|null $object_or_class = null)   Return the child classes of the given class or object
  * @method bool getClassDeprecated()                                       Returns true if class is deprecated, otherwise false.
  * @method int getClassVersion()                                           We get the version of the class.
  * @method mixed getDeepProperty(array $keys, ?array $array = null)        Gets a property at any depth within the properties array.
+ * @method array getDescendantsTree(object|string|null $object_or_class = null)     Return a tree array of all descendants of the given class or object
+ * @method array|false getParents(object|string|null $object_or_class = null, bool $autoload = true)     Return the parent classes of the given class or object
  * @method array getProperties()                                           Returns the table of class properties.
  * @method mixed getProperty(string $property)                             Returns the content of the requested property.
  * @method ?array getPublicProperties()                                    Returns an array of the public properties of the class.
@@ -208,8 +243,8 @@ class TObject extends stdClass implements TCoreHandler
 		'deprecated' => false, 			    // Indicates whether this class is deprecated.
         'deprecatedAtAscoosVersion' => -1,  // The version of Ascoos Cms in which the class has been declared deprecated.
 		'removedAtVersion' => -1,		    // The class will be deleted in version ... If it is -1 then it will not be deleted.
-		'version' => 10000,				    // Class Version
-		'MinAscoosVersion' => 2400000000,	// The minimum version of Ascoos Cms that this class can run.
+		'version' => 2400070000,		    // Class Version
+		'MinAscoosVersion' => 2400070000,	// The minimum version of Ascoos Cms that this class can run.
 		'MaxAscoosVersion' => -1,		    // The maximum version of Ascoos Cms that this class can run.
 		'MinPHPVersion' => 80200,		    // The minimum version of PHP that this class can run.
 		'MaxPHPVersion' => -1,			    // The maximum version of PHP that this class can run.
@@ -247,6 +282,9 @@ class TObject extends stdClass implements TCoreHandler
         </Greek>
         */
         $this->properties = $this->defaults;
+        
+        // NOT DELETE. USED FOR CHECK VERSIONS
+        $this->properties['defaults'] = $this->defaults;
 
         /*
         <English>
@@ -275,6 +313,30 @@ class TObject extends stdClass implements TCoreHandler
     USE func_toString;
        
 
+    /**
+     * Return the child classes of the given class or object
+     * 
+     * @desc <English>  Return the child classes of the given class or object
+     * @desc <Greek>    Επιστροφή των παιδικών κλάσεων της δεδομένης κλάσης ή αντικειμένου
+     * 
+     * @param object|string|null $object_or_class   <English>  An object (class instance) or a string (class name).
+     *                                              <Greek>    Ένα αντικείμενο (παρουσία κλάσης) ή μια συμβολοσειρά (όνομα κλάσης).
+     * @return array  <English>  An array of child classes, empty array when there are no children.
+     *                  <Greek>    Ένας πίνακας με τις παιδικές κλάσεις, κενός πίνακας αν δεν υπάρχουν παιδιά.
+     */
+    public function getChildren(object|string|null $object_or_class = null): array {
+        $object_or_class = (!is_null($object_or_class)) ? $object_or_class : $this;
+        $parent_class = is_object($object_or_class) ? get_class($object_or_class) : $object_or_class;
+    
+        $child_classes = [];
+        $this->findChildren($parent_class, $child_classes);
+    
+        return array_unique($child_classes);
+    }
+    
+
+    
+    
 
     /**
      * Returns true if class is deprecated, otherwise false
@@ -300,7 +362,114 @@ class TObject extends stdClass implements TCoreHandler
 		return (int) $this->properties['version'];
 	}
 
-    
+      
+    /**
+     * Gets a property at any depth within the properties array.
+     * 
+     * @desc <English>  Gets a property at any depth within the properties array.
+     * @desc <Greek>    Ανακτά μία ιδιότητα σε οποιοδήποτε βάθος εντός του πίνακα ιδιοτήτων.
+     * 
+     * @param array $keys     <English>  An array representing the path to the property.
+     *                        <Greek>    Ένας πίνακας που αντιπροσωπεύει τη διαδρομή προς την ιδιότητα.
+     * @param array|null $array   <English>  The array to get the property from (used internally for recursion).
+     *                               <Greek>    Ο πίνακας από τον οποίο θα ανακτηθεί η ιδιότητα (χρησιμοποιείται εσωτερικά για αναδρομή).
+     * @return mixed
+     * 
+     * @version 24.0.6
+     */
+    public function getDeepProperty(array $keys, ?array $array = null): mixed
+    {
+        if ($array === null) {
+            $array = $this->properties;
+        }
+
+        $key = array_shift($keys);
+
+        if (empty($keys)) {
+            return $array[$key] ?? null;
+        }
+
+        if (!isset($array[$key]) || !is_array($array[$key])) {
+            return null;
+        }
+
+        return $this->getDeepProperty($keys, $array[$key]);
+    }
+
+
+    /**
+     * Return a tree array of all descendants of the given class or object
+     * 
+     * @desc <English>  Return a tree array of all descendants of the given class or object
+     * @desc <Greek>    Επιστροφή ενός πίνακα δέντρου με όλους τους απογόνους της δεδομένης κλάσης ή αντικειμένου
+     * 
+     * @param object|string|null $object_or_class   <English>  An object (class instance) or a string (class name).
+     *                                              <Greek>    Ένα αντικείμενο (παρουσία κλάσης) ή μια συμβολοσειρά (όνομα κλάσης).
+     * @return array  <English>  An array representing the descendants tree.
+     *                  <Greek>    Ένας πίνακας που αναπαριστά το δέντρο των απογόνων.
+     */
+    public function getDescendantsTree(object|string|null $object_or_class = null): array {
+        $object_or_class = (!is_null($object_or_class)) ? $object_or_class : $this;
+        $parent_class = is_object($object_or_class) ? get_class($object_or_class) : $object_or_class;
+
+        $tree = [];
+        $this->buildDescendantsTree($parent_class, $tree);
+
+        return $tree;
+    }
+
+
+    /**
+     * Return the parent classes of the given class or object
+     * 
+     * @desc <English>  Return the parent classes of the given class or object
+     * @desc <Greek>    Επιστροφή των γονικών κλάσεων της δεδομένης κλάσης ή αντικειμένου
+     * 
+     * @param object|string|null $object_or_class   <English>  An object (class instance) or a string (class name). 
+     *                                              <Greek>    Ένα αντικείμενο (παρουσία κλάσης) ή μια συμβολοσειρά (όνομα κλάσης).
+     * @param bool $autoload    <English>  Whether to autoload if not already loaded.
+     *                          <Greek>    Εάν θα γίνει αυτόματη φόρτωση εάν δεν έχει ήδη φορτωθεί. 
+     * @return array|false  <English>  An array on success, or false when the given class doesn't exist. 
+     *                      <Greek>    Ένας πίνακας για την επιτυχία, ή ψευδής όταν η δεδομένη κλάση δεν υπάρχει. 
+     */
+    public function getParents(object|string|null $object_or_class = null, bool $autoload = true): array|false {
+        $object_or_class = (!is_null($object_or_class)) ? $object_or_class : $this;
+        return  class_parents($object_or_class, $autoload);
+    }
+
+
+    /**
+     * Returns the table of class properties.
+     * 
+     * @desc <English>  Returns the table of class properties.
+     * @desc <Greek>    Επιστρέφει τον πίνακα ιδιοτήτων της κλάσης.
+     * 
+     * @return array <English>  The properties array.
+     *               <Greek>    Ο πίνακας ιδιοτήτων.
+     * 
+     * @version 24.0.0
+     */
+    public function getProperties() : array 
+	{
+		return $this->properties;
+	}
+
+
+    /**
+     * @desc <English>  Returns the content of the requested property
+     * @desc <Greek>    Επιστρέφει το περιεχόμενο της ιδιότητας που ζητήθηκε
+     * 
+     * @param string $property  <English> The name of the property we request to get its data
+     *                              <Greek> Το όνομα της ιδιότητας που ζητάμε να πάρουμε τα δεδομένα της
+     * @return mixed            <English> Returns the content of the requested property
+     *                              <Greek> Επιστρέφει το περιεχόμενο της ιδιότητας που ζητήθηκε
+     * @version 24.0.0
+     */
+    public function getProperty(string $property): mixed  
+	{
+		return $this->properties[$property];
+	}
+
 
     /**
      * @desc <English>  Returns an array of the public properties of the class.
@@ -381,73 +550,6 @@ class TObject extends stdClass implements TCoreHandler
         */
         return $cache;
     }
-
-    
-    /**
-     * Gets a property at any depth within the properties array.
-     * 
-     * @desc <English>  Gets a property at any depth within the properties array.
-     * @desc <Greek>    Ανακτά μία ιδιότητα σε οποιοδήποτε βάθος εντός του πίνακα ιδιοτήτων.
-     * 
-     * @param array $keys     <English>  An array representing the path to the property.
-     *                        <Greek>    Ένας πίνακας που αντιπροσωπεύει τη διαδρομή προς την ιδιότητα.
-     * @param array|null $array   <English>  The array to get the property from (used internally for recursion).
-     *                               <Greek>    Ο πίνακας από τον οποίο θα ανακτηθεί η ιδιότητα (χρησιμοποιείται εσωτερικά για αναδρομή).
-     * @return mixed
-     * 
-     * @version 24.0.6
-     */
-    public function getDeepProperty(array $keys, ?array $array = null): mixed
-    {
-        if ($array === null) {
-            $array = $this->properties;
-        }
-
-        $key = array_shift($keys);
-
-        if (empty($keys)) {
-            return $array[$key] ?? null;
-        }
-
-        if (!isset($array[$key]) || !is_array($array[$key])) {
-            return null;
-        }
-
-        return $this->getDeepProperty($keys, $array[$key]);
-    }
-
-
-    /**
-     * Returns the table of class properties.
-     * 
-     * @desc <English>  Returns the table of class properties.
-     * @desc <Greek>    Επιστρέφει τον πίνακα ιδιοτήτων της κλάσης.
-     * 
-     * @return array <English>  The properties array.
-     *               <Greek>    Ο πίνακας ιδιοτήτων.
-     * 
-     * @version 24.0.0
-     */
-    public function getProperties() : array 
-	{
-		return $this->properties;
-	}
-
-
-    /**
-     * @desc <English>  Returns the content of the requested property
-     * @desc <Greek>    Επιστρέφει το περιεχόμενο της ιδιότητας που ζητήθηκε
-     * 
-     * @param string $property  <English> The name of the property we request to get its data
-     *                              <Greek> Το όνομα της ιδιότητας που ζητάμε να πάρουμε τα δεδομένα της
-     * @return mixed            <English> Returns the content of the requested property
-     *                              <Greek> Επιστρέφει το περιεχόμενο της ιδιότητας που ζητήθηκε
-     * @version 24.0.0
-     */
-    public function getProperty(string $property): mixed  
-	{
-		return $this->properties[$property];
-	}
 
 
     /**
@@ -772,6 +874,74 @@ class TObject extends stdClass implements TCoreHandler
     /**
      * ............... Private TObject methods  .................
      */ 
+
+
+    /**
+     * Recursively build a tree array of all descendants of the given class or object
+     * 
+     * @desc <English>  Recursively build a tree array of all descendants of the given class or object
+     * @desc <Greek>    Δημιουργία αναδρομικά ενός πίνακα δέντρου με όλους τους απογόνους της δεδομένης κλάσης ή αντικειμένου
+     * 
+     * @param string $parent_class   <English>  The name of the parent class.
+     *                                <Greek>    Το όνομα της γονικής κλάσης.
+     * @param array &$tree  <English>  The array to which the descendants will be added.
+     *                   <Greek>    Ο πίνακας στον οποίο θα προστεθούν οι απόγονοι.
+     */
+    private function buildDescendantsTree(string $parent_class, array &$tree): void {
+        foreach (get_declared_classes() as $class) {
+            if (is_subclass_of($class, $parent_class)) {
+                $tree[$class] = [];
+                $this->buildDescendantsTree($class, $tree[$class]);
+            }
+        }
+    }
+
+
+    /**
+     * Get the direct child classes of the given parent class.
+     * 
+     * @desc <English>  Get the direct child classes of the given parent class.
+     * @desc <Greek>    Λήψη των άμεσων παιδικών κλάσεων της δεδομένης γονικής κλάσης.
+     * 
+     * @param string $parent_class   <English>  The name of the parent class.
+     *                                <Greek>    Το όνομα της γονικής κλάσης.
+     * @return array   <English>  An array of direct child classes.
+     *                 <Greek>    Ένας πίνακας με τις άμεσες παιδικές κλάσεις.
+     */
+    private function getDirectChildren(string $parent_class): array {
+        $child_classes = []; // Αρχικοποίηση ενός πίνακα για την αποθήκευση των παιδικών κλάσεων
+        foreach (get_declared_classes() as $class) {
+            // Ελέγχει αν η κλάση είναι υποκλάση της γονικής κλάσης
+            if (is_subclass_of($class, $parent_class)) {
+                $child_classes[] = $class; // Προσθήκη της παιδικής κλάσης στον πίνακα
+            }
+        }
+        return $child_classes; // Επιστροφή του πίνακα με τις παιδικές κλάσεις
+    }
+     
+
+    /**
+     * Recursively find all child classes of the given parent class and add them to the provided array.
+     * 
+     * @desc <English>  Recursively find all child classes of the given parent class and add them to the provided array.
+     * @desc <Greek>    Βρίσκει αναδρομικά όλες τις παιδικές κλάσεις της δεδομένης γονικής κλάσης και τις προσθέτει στον δοσμένο πίνακα.
+     * 
+     * @param string $parent_class   <English>  The name of the parent class.
+     *                                <Greek>    Το όνομα της γονικής κλάσης.
+     * @param array &$child_classes  <English>  The array to which the child classes will be added.
+     *                                <Greek>    Ο πίνακας στον οποίο θα προστεθούν οι παιδικές κλάσεις.
+     */
+    private function findChildren(string $parent_class, array &$child_classes): void {
+        foreach (get_declared_classes() as $class) {
+            // Ελέγχει αν η κλάση είναι υποκλάση της γονικής κλάσης και αν δεν είναι ήδη στον πίνακα
+            if (is_subclass_of($class, $parent_class) && !in_array($class, $child_classes)) {
+                $child_classes[] = $class; // Προσθήκη της παιδικής κλάσης στον πίνακα
+                $this->findChildren($class, $child_classes); // Αναδρομική κλήση για εύρεση των παιδικών κλάσεων της παιδικής κλάσης
+            }
+        }
+    }
+
+
 
     /**
      * Helper function to recursively merge two arrays.
