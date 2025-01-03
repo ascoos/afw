@@ -7,22 +7,23 @@
  * 
  * 
  ************************************************************************************
- * @ASCOOS-NAME        	: ASCOOS CMS 24'                                            *
- * @ASCOOS-VERSION     	: 24.0.0                                                    *
+ * @ASCOOS-NAME        	: ASCOOS CMS 25'                                            *
+ * @ASCOOS-VERSION     	: 25.0.0                                                    *
  * @ASCOOS-CATEGORY    	: Framework (Frontend and Administrator Side)               *
  * @ASCOOS-CREATOR     	: Drogidis Christos                                         *
  * @ASCOOS-SITE        	: www.ascoos.com                                            *
  * @ASCOOS-LICENSE     	: [Commercial] http://docs.ascoos.com/lics/ascoos/AGL.html  *
- * @ASCOOS-COPYRIGHT   	: Copyright (c) 2007 - 2024, AlexSoft Software.             *
+ * @ASCOOS-COPYRIGHT   	: Copyright (c) 2007 - 2025, AlexSoft Software.             *
  ************************************************************************************
  *
- * @package            	: ASCOOS FRAMEWORK 24'
+ * @package            	: ASCOOS FRAMEWORK 25'
  * @subpackage         	: Handles Chache.
  * @source             	: afw/kernel/coreCache.php
  * @fileNo             	: 
- * @version            	: 24.0.7
- * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-18 07:00:00 UTC+3 
+ * @version            	: 25.0.0
+ * @build               : 10829
+ * @created            	: 2007-05-11 07:00:00 UTC+2 
+ * @updated            	: 2025-01-01 07:00:00 UTC+2
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -251,20 +252,28 @@ class TCacheHandler extends TObject
  * @RUNCODE  Default
  *****************************************************************************/
 switch ($conf['cacheType']) {
+    case 'apcu':
+        require_once "handlers/cache/apcu.php";
+        break; 
+
     // ASCOOS CMS Cache Driver
 //    case 'ascoos':
-//        require_once "drivers/cache/ascoos.php";
+//        require_once "handlers/cache/ascoos.php";
 //        break;
  
     // Memcached Cache Driver
     case 'memcached':
-        require_once "drivers/cache/memcached.php";
+        require_once "handlers/cache/memcached.php";
         break;
  
+    case 'opcache':
+        require_once "handlers/cache/opcache.php";
+        break; 
+
     // Files (JSON) Cache Driver (DEFAULT)
     case 'file':
     default:
-        require_once "drivers/cache/files.php";
+        require_once "handlers/cache/files.php";
 }
  
 ?>
