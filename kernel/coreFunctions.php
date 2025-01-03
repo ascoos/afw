@@ -7,22 +7,23 @@
  * 
  * 
  ************************************************************************************
- * @ASCOOS-NAME        	: ASCOOS CMS 24'                                            *
- * @ASCOOS-VERSION     	: 24.0.0                                                    *
+ * @ASCOOS-NAME        	: ASCOOS CMS 25'                                            *
+ * @ASCOOS-VERSION     	: 25.0.0                                                    *
  * @ASCOOS-CATEGORY    	: Framework (Frontend and Administrator Side)               *
  * @ASCOOS-CREATOR     	: Drogidis Christos                                         *
  * @ASCOOS-SITE        	: www.ascoos.com                                            *
  * @ASCOOS-LICENSE     	: [Commercial] http://docs.ascoos.com/lics/ascoos/AGL.html  *
- * @ASCOOS-COPYRIGHT   	: Copyright (c) 2007 - 2024, AlexSoft Software.             *
+ * @ASCOOS-COPYRIGHT   	: Copyright (c) 2007 - 2025, AlexSoft Software.             *
  ************************************************************************************
  *
- * @package            	: ASCOOS FRAMEWORK 24'
+ * @package            	: ASCOOS FRAMEWORK 25'
  * @subpackage         	: Core Functions Library
  * @source             	: afw/kernel/coreFunctions.php
  * @fileNo             	: 
- * @version            	: 24.0.6
- * @created            	: 2024-07-01 20:00:00 UTC+3 
- * @updated            	: 2024-12-15 07:00:00 UTC+3 
+ * @version            	: 25.0.0
+ * @build               : 10829
+ * @created            	: 2007-05-01 07:00:00 GMT+2
+ * @updated            	: 2025-01-01 07:00:00 UTC+2
  * @author             	: Drogidis Christos
  * @authorSite         	: www.alexsoft.gr
  * @license 			: AGL-F
@@ -30,101 +31,22 @@
  * @since PHP 8.2
  */
 declare(strict_types=1);
-
 defined ("ALEXSOFT_RUN_CMS") or die("Prohibition of Access.");
 defined ("ASCOOS_FRAMEWORK_RUN") or die("Prohibition of Access.");
 
-use ASCOOS\FRAMEWORK\Kernel\Core\TError;
+//use ASCOOS\FRAMEWORK\Kernel\Core\TError;
 
 /**
  * [ LIST FUNCTIONS ]
- * 
- * @function bool array_is_empty(array $array)  Checks if an array is empty.
- * @function string formatBytes()               Returns the size of bytes in a formatted string 
- *                                                  e.g. 20.4 KB, 230.2 MB, 20.5 GB, etc.
- * @function bool is_even()                     Checking if a number is even
- * @function bool is_odd()                      Checking if a number is odd 
- * @function string|false vn()                  Returns the name of a variable as a string. Otherwise it returns false
+ * @function bool array_is_empty(array $array)                                          Checks if an array is empty.
+ * @function string ext_os()                                                            Get the appropriate file extension for the operating system.
+ * @function string formatBytes()                                                       Returns the size of bytes in a formatted string e.g. 20.4 KB, 230.2 MB, 20.5 GB, etc.
  * @function string intToVersionString(int $number, string $mask = 'X.XX.XX')           Converts an integer to a version string format using a mask.
+ * @function bool is_even()                                                             Checking if a number is even
+ * @function bool is_odd()                                                              Checking if a number is odd 
  * @function int versionStringToInt(string $versionString, string $mask = 'X.XX.XX')    Converts a version string format to an integer using a mask.
+ * @function string|false vn()                                                          Returns the name of a variable as a string. Otherwise it returns false
  */
-
-
- 
-/**
- * Returns the size of bytes in a formatted string e.g. 20.4 KB, 230.2 MB, 20.5 GB, etc.
- * 
- * @param int $bytes
- * @param int $precision = 2    [optional] The optional number of decimal digits.
- * @return string
- * 
- * @version 24.0.0
- */
-function formatBytes($bytes, $precision = 2) {
-    $units = array('B', 'KB', 'MB', 'GB', 'TB');
-    
-    $bytes = max($bytes, 0);
-    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-    $pow = min($pow, count($units) - 1);
-
-    $bytes /= pow(1024, $pow);
-
-    return round($bytes, $precision) . ' ' . $units[$pow];
-}
-
-
-/**
- * @function string|false vn($var)
- * 
- * Returns the name of a variable as a string. Otherwise it returns false
- * 
- * @param mixed $var    The Variable
- * @return string|false
- * 
- * @version 24.0.0
- */
-function vn($var): string|false
-{
-    foreach ($GLOBALS  as $vn => $val) {
-        if ($val === $var) {
-            return "$".$vn;
-        }
-    }
-    return false;
-}
-
-
-/**
- * @function even(int $number): bool
- * 
- * Checking if a number is even 
- * 
- * @param mixed $number     The number to be checked.
- * @return bool             Returns true if even, otherwise false.
- * 
- * @version 24.0.0
- */
-function is_even($number): bool
-{
-    return (intval($number) % 2 == 0) ? true : false; 
-}
-
-/**
- * @function is_odd(int $number): bool
- * 
- * Checking if a number is odd 
- * 
- * @param mixed $number     The number to be checked.
- * @return bool             Returns true if odd, otherwise false.
- * 
- * @version 24.0.0
- */
-function is_odd($number): bool
-{
-    return !is_even($number); 
-}
-
-
 
 
 /**
@@ -159,6 +81,50 @@ function array_is_empty(array $array): bool
 }
 
 
+
+/**
+ * Get the appropriate file extension for the operating system.
+ * 
+ * @desc <English> Determines the correct file extension for dynamic libraries based on the operating system.
+ * @desc <Greek> Προσδιορίζει τη σωστή κατάληξη αρχείου για δυναμικές βιβλιοθήκες με βάση το λειτουργικό σύστημα.
+ * 
+ * @return string <English>  Returns '.dll' for Windows and '.so' for Linux/Unix-based systems.
+ *                 <Greek>    Επιστρέφει '.dll' για Windows και '.so' για συστήματα βασισμένα σε Linux/Unix.
+ */
+function ext_os(): string {
+    if (stristr(PHP_OS, 'WIN')) {
+        // <English> Check if the operating system is Windows
+        // <Greek> Ελέγξτε αν το λειτουργικό σύστημα είναι Windows
+        return '.dll';
+    } else {
+        // <English> For Linux/Unix-based systems
+        // <Greek> Για συστήματα βασισμένα σε Linux/Unix
+        return '.so';
+    }
+}
+
+
+ 
+/**
+ * Returns the size of bytes in a formatted string e.g. 20.4 KB, 230.2 MB, 20.5 GB, etc.
+ * 
+ * @param int $bytes
+ * @param int $precision = 2    [optional] The optional number of decimal digits.
+ * @return string
+ * 
+ * @version 24.0.0
+ */
+function formatBytes($bytes, $precision = 2) {
+    $units = array('B', 'KB', 'MB', 'GB', 'TB');
+    
+    $bytes = max($bytes, 0);
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $pow = min($pow, count($units) - 1);
+
+    $bytes /= pow(1024, $pow);
+
+    return round($bytes, $precision) . ' ' . $units[$pow];
+}
 
 
 /**
@@ -302,6 +268,37 @@ function intToVersionString(int $number, string $mask = 'X.XX.XX'): string {
 
 
 /**
+ * @function is_even(int $number): bool
+ * 
+ * Checking if a number is even 
+ * 
+ * @param mixed $number     The number to be checked.
+ * @return bool             Returns true if even, otherwise false.
+ * 
+ * @version 24.0.0
+ */
+function is_even($number): bool
+{
+    return (intval($number) % 2 == 0) ? true : false; 
+}
+
+/**
+ * @function is_odd(int $number): bool
+ * 
+ * Checking if a number is odd 
+ * 
+ * @param mixed $number     The number to be checked.
+ * @return bool             Returns true if odd, otherwise false.
+ * 
+ * @version 24.0.0
+ */
+function is_odd($number): bool
+{
+    return !is_even($number); 
+}
+
+
+/**
  * Converts a version string format to an integer using a mask.
  * 
  * @desc <English> Converts a version string format to an integer using a mask.
@@ -357,6 +354,30 @@ function versionStringToInt(string $versionString, string $mask = 'X.XX.XX'): in
     return intVal($numberStr);
 }
 
+
+/**
+ * @function string|false vn($var)
+ * 
+ * Returns the name of a variable as a string. Otherwise it returns false
+ * 
+ * @param mixed $var    The Variable
+ * @return string|false
+ * 
+ * @version 24.0.0
+ */
+function vn($var): string|false
+{
+    foreach ($GLOBALS  as $vn => $val) {
+        if ($val === $var) {
+            return "$".$vn;
+        }
+    }
+    return false;
+}
+
+// __________________________________________________________________________________
+// ............... Others global functions, constants and variables .................
+// __________________________________________________________________________________
 
 
 ?>
