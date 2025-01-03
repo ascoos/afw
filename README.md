@@ -1,6 +1,6 @@
 ![Ascoos Cms](https://dl.ascoos.com/images/ascoos.png)
 
-# ASCOOS Framework 24'
+# ASCOOS Framework 25'
 
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fwww.ascoos.com)](https://www.ascoos.com)
 ![GitHub top language](https://img.shields.io/github/languages/top/ascoos/afw)
@@ -13,15 +13,16 @@
 
 This package is a very small part of the `Ascoos Cms` custom core for use with `PHP 8.2` or later.
 
-`Ascoos Cms 24` consists of several core code blocks, one of which is the `Ascoos Framework 24`, as well as [phpBCL](https://github.com/ascoos/phpBCL).
+`Ascoos Cms 25` consists of several core code blocks, one of which is the `Ascoos Framework 25`, as well as [phpBCL8](https://github.com/ascoos/phpbcl8).
 
-In older versions, the `Ascoos Framework` was integrated into the `Ascoos Cms` core, but in the new version 24 it becomes independent and is now one of the many main components of the Cms core.
+In older versions, the `Ascoos Framework` was integrated into the `Ascoos Cms` core, but in the new version 25 it becomes independent and is now one of the many main components of the Cms core.
 
 In the modern way of programming, the ability of a core code to be modular, gives it the ability to adapt to modern methods and requirements.
 `Ascoos Cms` has had this to a large extent in its core since the first releases in the distant 2008. In 2010 it was almost a complete modular core code block.
-Now, the new version 24 is now coming to create new data in its modular core.
 
-Version 24 only works on `PHP 8.2 or later`, as the core has been redesigned from the ground up to support modern programming methods and features.
+Now, the new version 25 is now coming to create new data in its modular core.
+
+Version 25 only works on `PHP 8.2 or later`, as the core has been redesigned from the ground up to support modern programming methods and features.
 
 Part of the `Ascoos Framework`, it is provided as source code to make it easier for Web Developers to understand how to write the extensions they will create for `Ascoos Cms`.
 
